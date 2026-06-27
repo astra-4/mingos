@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to GoofyOS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px 40px;
+      background: #dcebff;
+      color: #21345f;
+      font-family: 'Nunito Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .blob.one {
+      top: -140px;
+      left: -120px;
+      width: 520px;
+      height: 520px;
+      background: #bcd8ff;
+      opacity: 0.7;
+    }
+
+    .blob.two {
+      bottom: -180px;
+      right: -120px;
+      width: 560px;
+      height: 560px;
+      background: #d8d3ff;
+      opacity: 0.6;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      z-index: 6;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dots .a {
+      background: #1f6bff;
+      box-shadow: 0 0 8px rgba(31, 107, 255, 0.5);
+    }
+
+    .dots .b {
+      background: #9fc0ff;
+    }
+
+    .dots .c {
+      background: #c9c0ff;
+    }
+
+    .os-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #2b3f6b;
+      margin-left: 10px;
+    }
+
+    .clock {
+      font-weight: 600;
+      font-size: 14px;
+      color: #3a5286;
+    }
+
+    .flower {
+      position: fixed;
+      width: 78px;
+      height: 78px;
+      z-index: 1;
+    }
+
+    .floret {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+    }
+
+    .floret .petal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 13px;
+      height: 13px;
+      margin: -6.5px 0 0 -6.5px;
+      border-radius: 3px;
+      background: #c4baff;
+    }
+
+    .floret .up {
+      transform: translate(0, -7px) rotate(45deg);
+    }
+
+    .floret .right {
+      transform: translate(7px, 0) rotate(45deg);
+    }
+
+    .floret .down {
+      transform: translate(0, 7px) rotate(45deg);
+    }
+
+    .floret .left {
+      transform: translate(-7px, 0) rotate(45deg);
+    }
+
+    .floret .core {
+      left: 50%;
+      top: 50%;
+      margin: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1f6bff;
+      transform: translate(-50%, -50%);
+    }
+
+    .f1 {
+      left: 24px;
+      top: 2px;
+    }
+
+    .f2 {
+      left: 2px;
+      top: 24px;
+    }
+
+    .f3 {
+      left: 46px;
+      top: 24px;
+    }
+
+    .f4 {
+      left: 25px;
+      top: 46px;
+    }
+
+    .flower.tl {
+      top: 104px;
+      left: 6%;
+    }
+
+    .flower.tl .petal {
+      background: #c4baff;
+    }
+
+    .flower.bl {
+      bottom: 78px;
+      left: 11%;
+      transform: scale(0.82);
+    }
+
+    .flower.bl .petal {
+      background: #b2cfff;
+    }
+
+    .flower.tr {
+      top: 150px;
+      right: 8%;
+      transform: scale(0.9);
+    }
+
+    .flower.tr .petal {
+      background: #c7e6ff;
+    }
+
+    .flower.br {
+      bottom: 118px;
+      right: 13%;
+      transform: scale(0.66);
+    }
+
+    .flower.br .petal {
+      background: #d1ccff;
+    }
+
+    .card {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 600px;
+      padding: 44px 44px 38px;
+      text-align: center;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 60px -22px rgba(40, 70, 140, 0.4),
+        0 0 0 1px rgba(160, 190, 255, 0.18);
+    }
+
+    .avatar {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 22px;
+      padding: 5px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #1f6bff, #b9d4ff);
+      box-shadow: 0 0 26px rgba(31, 107, 255, 0.45);
+    }
+
+    .avatar .inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px dashed #a9c4f5;
+      background-color: #eef5ff;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(31, 107, 255, 0.08) 0 7px,
+        transparent 7px 14px
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #7d93c4;
+      overflow: hidden;
+    }
+
+    .pfp {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      color: #1c2f59;
+    }
+
+    h1 .fill {
+      color: #1f6bff;
+      border-bottom: 3px dashed #1f6bff;
+      padding-bottom: 1px;
+    }
+
+    .tagline {
+      margin: 0 0 22px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #5a6f9e;
+    }
+
+    .intro {
+      margin: 0 auto 26px;
+      max-width: 440px;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: #56678f;
+    }
+
+    .intro strong {
+      color: #374d80;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .chip {
+      padding: 9px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f6bff;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid #1f6bff;
+      transition: all 0.18s ease;
+    }
+
+    .chip:hover {
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 0 16px rgba(31, 107, 255, 0.5);
+    }
+
+    .enter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 8px 22px -6px rgba(31, 107, 255, 0.6),
+        0 0 24px rgba(31, 107, 255, 0.45);
+      transition: transform 0.18s ease;
+    }
+
+    .enter:hover {
+      transform: translateY(-2px);
+    }
+
+    .arrow {
+      font-size: 18px;
+    }
+
+    .mini {
+      margin: 24px 0 0;
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #8ea0c8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="dots">
+        <span class="a"></span>
+        <span class="b"></span>
+        <span class="c"></span>
+      </div>
+      <span class="os-name">MingOS</span>
+    </div>
+    <div class="clock">6:07 PM &nbsp;•&nbsp; Sat, Jun 7</div>
+  </div>
+
+  <div class="flower tl">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower bl">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower tr">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower br">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div> 
+  </div>
+
+  <div class="card">
+
+    <div class="avatar">
+      <div class="inner">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN8bSnvLDR43IlnuMGZ5ldYeFPFmzWb0Qwgg&s" class="pfp">
+      </div>
+    </div>
+
+    <h1>welcome to <span class="fill">AstraOS</span></h1>
+
+    <p class="tagline">ad astra!</p>
+
+    <p class="intro">
+      what's up with it. welcome to toomfolery land :3
+    </p>
+
+    <div class="links">
+      <a class="chip" href="#">link 1</a>
+      <a class="chip" href="#">link 2</a>
+      <a class="chip" href="#">link 3</a>
+    </div>
+
+    <a class="enter" href="#">step inside <span class="arrow">↗</span></a>
+
+    <p class="mini">skibidi toilet :3</p>
+
+  </div>
+
+</body>
+
+</html>
