@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to GoofyOS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 72px 24px 40px;
+      background: #dcebff;
+      color: #21345f;
+      font-family: 'Nunito Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .blob.one {
+      top: -140px;
+      left: -120px;
+      width: 520px;
+      height: 520px;
+      background: #bcd8ff;
+      opacity: 0.7;
+    }
+
+    .blob.two {
+      bottom: -180px;
+      right: -120px;
+      width: 560px;
+      height: 560px;
+      background: #d8d3ff;
+      opacity: 0.6;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      z-index: 6;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dots .a {
+      background: #1f6bff;
+      box-shadow: 0 0 8px rgba(31, 107, 255, 0.5);
+    }
+
+    .dots .b {
+      background: #9fc0ff;
+    }
+
+    .dots .c {
+      background: #c9c0ff;
+    }
+
+    .os-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #2b3f6b;
+      margin-left: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .clock {
+      font-weight: 600;
+      font-size: 14px;
+      color: #3a5286;
+    }
+
+    .desktop-apps {
+      position: absolute;
+      top: 64px;
+      left: 18px;
+      z-index: 2;
+    }
+
+    .app-icon {
+      position: absolute;
+      z-index: 2;
+      width: fit-content;
+      padding: 12px;
+      border-radius: 18px;
+      text-align: center;
+      cursor: grab;
+      user-select: none;
+      transition: background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .app-icon:active {
+      cursor: grabbing;
+    }
+
+    .app-icon:hover {
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .app-icon.selected {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 0 0 2px #1f6bff, 0 0 18px rgba(31, 107, 255, 0.45);
+    }
+
+    .icon-art {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 8px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #1f6bff, #b9d4ff);
+      box-shadow: 0 8px 18px -6px rgba(31, 107, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #fff;
+    }
+
+    .icon-label {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #2b3f6b;
+      text-shadow: 0 1px 6px rgba(255, 255, 255, 0.8);
+    }
+
+    .flower {
+      position: fixed;
+      width: 78px;
+      height: 78px;
+      z-index: 1;
+    }
+
+    .floret {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+    }
+
+    .floret .petal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 13px;
+      height: 13px;
+      margin: -6.5px 0 0 -6.5px;
+      border-radius: 3px;
+      background: #c4baff;
+    }
+
+    .floret .up {
+      transform: translate(0, -7px) rotate(45deg);
+    }
+
+    .floret .right {
+      transform: translate(7px, 0) rotate(45deg);
+    }
+
+    .floret .down {
+      transform: translate(0, 7px) rotate(45deg);
+    }
+
+    .floret .left {
+      transform: translate(-7px, 0) rotate(45deg);
+    }
+
+    .floret .core {
+      left: 50%;
+      top: 50%;
+      margin: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1f6bff;
+      transform: translate(-50%, -50%);
+    }
+
+    .f1 {
+      left: 24px;
+      top: 2px;
+    }
+
+    .f2 {
+      left: 2px;
+      top: 24px;
+    }
+
+    .f3 {
+      left: 46px;
+      top: 24px;
+    }
+
+    .f4 {
+      left: 25px;
+      top: 46px;
+    }
+
+    .flower.tl {
+      top: 104px;
+      left: 6%;
+    }
+
+    .flower.tl .petal {
+      background: #c4baff;
+    }
+
+    .flower.bl {
+      bottom: 78px;
+      left: 11%;
+      transform: scale(0.82);
+    }
+
+    .flower.bl .petal {
+      background: #b2cfff;
+    }
+
+    .flower.tr {
+      top: 150px;
+      right: 8%;
+      transform: scale(0.9);
+    }
+
+    .flower.tr .petal {
+      background: #c7e6ff;
+    }
+
+    .flower.br {
+      bottom: 118px;
+      right: 13%;
+      transform: scale(0.66);
+    }
+
+    .flower.br .petal {
+      background: #d1ccff;
+    }
+
+    .card {
+      position: absolute;
+      z-index: 3;
+      width: 100%;
+      max-width: 600px;
+      padding: 16px 44px 38px;
+      text-align: center;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 60px -22px rgba(40, 70, 140, 0.4),
+        0 0 0 1px rgba(160, 190, 255, 0.18);
+    }
+
+    .windowheader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: -16px -44px 18px;
+      padding: 13px 20px;
+      border-radius: 32px 32px 0 0;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .windowheader:active {
+      cursor: grabbing;
+    }
+
+    .wdots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .wdot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+    }
+
+    .wdot.close {
+      background: #ff8095;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(255, 128, 149, 0.5);
+    }
+
+    .wdot.close:hover {
+      background: #ff5a74;
+    }
+
+    .wdot.two {
+      background: #9fc0ff;
+    }
+
+    .wdot.three {
+      background: #c9c0ff;
+    }
+
+    .handle-label {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: 0.5px;
+      color: #8ea0c8;
+    }
+
+    .avatar {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 22px;
+      padding: 5px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #1f6bff, #b9d4ff);
+      box-shadow: 0 0 26px rgba(31, 107, 255, 0.45);
+    }
+
+    .avatar .inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px dashed #a9c4f5;
+      background-color: #eef5ff;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(31, 107, 255, 0.08) 0 7px,
+        transparent 7px 14px
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #7d93c4;
+      overflow: hidden;
+    }
+
+    .pfp {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      color: #1c2f59;
+    }
+
+    h1 .fill {
+      color: #1f6bff;
+      border-bottom: 3px dashed #1f6bff;
+      padding-bottom: 1px;
+    }
+
+    .tagline {
+      margin: 0 0 22px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #5a6f9e;
+    }
+
+    .intro {
+      margin: 0 auto 26px;
+      max-width: 440px;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: #56678f;
+    }
+
+    .intro strong {
+      color: #374d80;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .chip {
+      padding: 9px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f6bff;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid #1f6bff;
+      transition: all 0.18s ease;
+    }
+
+    .chip:hover {
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 0 16px rgba(31, 107, 255, 0.5);
+    }
+
+    .enter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 8px 22px -6px rgba(31, 107, 255, 0.6),
+        0 0 24px rgba(31, 107, 255, 0.45);
+      transition: transform 0.18s ease;
+    }
+
+    .enter:hover {
+      transform: translateY(-2px);
+    }
+
+    .arrow {
+      font-size: 18px;
+    }
+
+    .mini {
+      margin: 24px 0 0;
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #8ea0c8;
+    }
+
+    .app-body {
+      display: flex;
+      gap: 14px;
+      text-align: left;
+      height: 420px;
+    }
+
+    .sidebar {
+      width: 168px;
+      flex-shrink: 0;
+      padding: 8px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.55);
+      overflow-y: auto;
+    }
+
+    .sidebar-item {
+      padding: 11px 13px;
+      margin-bottom: 8px;
+      border-radius: 14px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-item:hover {
+      border-color: #b9d4ff;
+    }
+
+    .sidebar-item.active {
+      border-color: #1f6bff;
+      background: #fff;
+    }
+
+    .sidebar-item .s-title {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1c2f59;
+    }
+
+    .sidebar-item .s-date {
+      margin: 2px 0 0;
+      font-family: monospace;
+      font-size: 11px;
+      color: #8ea0c8;
+    }
+
+    .note-panel {
+      flex: 1;
+      padding: 20px 22px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      overflow-y: auto;
+    }
+
+    .note-panel h2 {
+      margin: 0 0 4px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      color: #1f6bff;
+    }
+
+    .note-panel .n-date {
+      margin: 0 0 16px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #8ea0c8;
+    }
+
+    .note-panel p {
+      margin: 0 0 14px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #4a5d88;
+    }
+
+    .note-panel blockquote {
+      margin: 16px 0;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border-left: 3px solid #c4baff;
+      background: rgba(196, 186, 255, 0.18);
+      font-style: italic;
+      color: #5a6f9e;
+    }
+
+    .doodle-frame {
+      width: 100%;
+      height: 240px;
+      margin-bottom: 14px;
+      border-radius: 18px;
+      border: 2px dashed #a9c4f5;
+      background-color: #eef5ff;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(31, 107, 255, 0.08) 0 8px,
+        transparent 8px 16px
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 12px;
+      color: #7d93c4;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="dots">
+        <span class="a"></span>
+        <span class="b"></span>
+        <span class="c"></span>
+      </div>
+      <span class="os-name" id="welcomeopen">MingOS</span>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <div class="app-icon" id="starlogicon" style="top: 64px; left: 18px;">
+    <div class="icon-art">✦</div>
+    <p class="icon-label">Star Log</p>
+  </div>
+
+  <div class="app-icon" id="doodleicon" style="top: 64px; left: 120px;">
+    <div class="icon-art">✎</div>
+    <p class="icon-label">Doodles</p>
+  </div>
+
+  <div class="app-icon" id="mixicon" style="top: 64px; left: 222px;">
+    <div class="icon-art">♪</div>
+    <p class="icon-label">Mixtape</p>
+  </div>
+
+  <div class="flower tl">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower bl">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower tr">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="flower br">
+    <div class="floret f1">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f2">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f3">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+    <div class="floret f4">
+      <span class="petal up"></span>
+      <span class="petal right"></span>
+      <span class="petal down"></span>
+      <span class="petal left"></span>
+      <span class="petal core"></span>
+    </div>
+  </div>
+
+  <div class="card" id="welcome" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="welcomeheader">
+      <div class="wdots">
+        <span class="wdot close" id="welcomeclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">drag me ✿</span>
+    </div>
+
+    <div class="avatar">
+      <div class="inner">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN8bSnvLDR43IlnuMGZ5ldYeFPFmzWb0Qwgg&s" class="pfp">
+      </div>
+    </div>
+
+    <h1>welcome to <span class="fill">MingOS</span></h1>
+
+    <p class="tagline">ad astra!</p>
+
+    <p class="intro">
+      what's up with it. welcome to toomfolery land :3
+    </p>
+
+    <div class="links">
+      <a class="chip" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrLvn-avtKKQ-bNZdSQcwVH9k6Ee6fj73yxg&s">mrow</a>
+      <a class="chip" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">cases of dillas</a>
+      <a class="chip" href="https://www.instagram.com/3ird_mm/">shameless artist plug</a>
+    </div>
+
+    <a class="enter" href="#" id="welcomeenter">step inside <span class="arrow">↗</span></a>
+
+    <p class="mini">skibidi toilet :3</p>
+
+  </div>
+
+  <div class="card" id="starlog" style="display: none; max-width: 720px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="starlogheader">
+      <div class="wdots">
+        <span class="wdot close" id="starlogclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">star log ✦</span>
+    </div>
+
+    <div class="app-body">
+      <div class="sidebar" id="starlogsidebar"></div>
+      <div class="note-panel" id="starlogcontent"></div>
+    </div>
+
+  </div>
+
+  <div class="card" id="doodle" style="display: none; max-width: 720px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="doodleheader">
+      <div class="wdots">
+        <span class="wdot close" id="doodleclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">doodles ✎</span>
+    </div>
+
+    <div class="app-body">
+      <div class="sidebar" id="doodlesidebar"></div>
+      <div class="note-panel" id="doodlecontent"></div>
+    </div>
+
+  </div>
+
+  <div class="card" id="mix" style="display: none; max-width: 720px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="mixheader">
+      <div class="wdots">
+        <span class="wdot close" id="mixclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">mixtape ♪</span>
+    </div>
+
+    <div class="app-body">
+      <div class="sidebar" id="mixsidebar"></div>
+      <div class="note-panel" id="mixcontent"></div>
+    </div>
+
+  </div>
+
+  <script>
+    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    function updateClock() {
+      var now = new Date();
+
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var ampm = "AM";
+
+      if (hours >= 12) {
+        ampm = "PM";
+      }
+      if (hours > 12) {
+        hours = hours - 12;
+      }
+      if (hours === 0) {
+        hours = 12;
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+
+      var dayName = days[now.getDay()];
+      var monthName = months[now.getMonth()];
+      var date = now.getDate();
+
+      var timeString = hours + ":" + minutes + " " + ampm;
+      var dateString = dayName + ", " + monthName + " " + date;
+
+      document.querySelector("#clock").innerHTML =
+        timeString + " &nbsp;•&nbsp; " + dateString;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    dragElement(document.getElementById("welcome"));
+    dragElement(document.getElementById("starlog"));
+    dragElement(document.getElementById("doodle"));
+    dragElement(document.getElementById("mix"));
+    dragElement(document.getElementById("starlogicon"));
+    dragElement(document.getElementById("doodleicon"));
+    dragElement(document.getElementById("mixicon"));
+
+    function dragElement(element) {
+      var initialX = 0;
+      var initialY = 0;
+      var currentX = 0;
+      var currentY = 0;
+
+      var handle = document.getElementById(element.id + "header");
+
+      if (handle) {
+        handle.onmousedown = startDragging;
+      } else {
+        element.onmousedown = startDragging;
+      }
+
+      function startDragging(e) {
+        e = e || window.event;
+        e.preventDefault();
+        initialX = e.clientX;
+        initialY = e.clientY;
+        document.onmouseup = stopDragging;
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        currentX = initialX - e.clientX;
+        currentY = initialY - e.clientY;
+        initialX = e.clientX;
+        initialY = e.clientY;
+        element.style.top = (element.offsetTop - currentY) + "px";
+        element.style.left = (element.offsetLeft - currentX) + "px";
+      }
+
+      function stopDragging() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    var topBar = document.querySelector(".topbar");
+    var biggestIndex = 6;
+
+    var welcomeScreen = document.querySelector("#welcome");
+    var welcomeScreenClose = document.querySelector("#welcomeclose");
+    var welcomeScreenOpen = document.querySelector("#welcomeopen");
+
+    var starlogScreen = document.querySelector("#starlog");
+    var starlogScreenClose = document.querySelector("#starlogclose");
+    var starlogIcon = document.querySelector("#starlogicon");
+    var starlogSidebar = document.querySelector("#starlogsidebar");
+
+    var doodleScreen = document.querySelector("#doodle");
+    var doodleScreenClose = document.querySelector("#doodleclose");
+    var doodleIcon = document.querySelector("#doodleicon");
+    var doodleSidebar = document.querySelector("#doodlesidebar");
+
+    var mixScreen = document.querySelector("#mix");
+    var mixScreenClose = document.querySelector("#mixclose");
+    var mixIcon = document.querySelector("#mixicon");
+    var mixSidebar = document.querySelector("#mixsidebar");
+
+    function closeWindow(element) {
+      element.style.display = "none";
+    }
+
+    function openWindow(element) {
+      element.style.display = "block";
+      biggestIndex++;
+      element.style.zIndex = biggestIndex;
+      topBar.style.zIndex = biggestIndex + 1;
+    }
+
+    function handleWindowTap(element) {
+      biggestIndex++;
+      element.style.zIndex = biggestIndex;
+      topBar.style.zIndex = biggestIndex + 1;
+      deselectIcon(selectedIcon);
+    }
+
+    function addWindowTapHandling(element) {
+      element.addEventListener("mousedown", function () {
+        handleWindowTap(element);
+      });
+    }
+
+    addWindowTapHandling(welcomeScreen);
+    addWindowTapHandling(starlogScreen);
+    addWindowTapHandling(doodleScreen);
+    addWindowTapHandling(mixScreen);
+
+    welcomeScreenClose.addEventListener("click", function () {
+      closeWindow(welcomeScreen);
+    });
+
+    welcomeScreenOpen.addEventListener("click", function () {
+      openWindow(welcomeScreen);
+    });
+
+    var welcomeScreenEnter = document.querySelector("#welcomeenter");
+
+    welcomeScreenEnter.addEventListener("click", function () {
+      closeWindow(welcomeScreen);
+    });
+
+    starlogScreenClose.addEventListener("click", function () {
+      closeWindow(starlogScreen);
+    });
+
+    doodleScreenClose.addEventListener("click", function () {
+      closeWindow(doodleScreen);
+    });
+
+    mixScreenClose.addEventListener("click", function () {
+      closeWindow(mixScreen);
+    });
+
+    var selectedIcon = undefined;
+
+    function selectIcon(element) {
+      if (selectedIcon) {
+        selectedIcon.classList.remove("selected");
+      }
+      element.classList.add("selected");
+      selectedIcon = element;
+    }
+
+    function deselectIcon(element) {
+      if (element) {
+        element.classList.remove("selected");
+      }
+      selectedIcon = undefined;
+    }
+
+    function handleIconTap(element, windowToOpen) {
+      if (element.classList.contains("selected")) {
+        deselectIcon(element);
+        openWindow(windowToOpen);
+      } else {
+        selectIcon(element);
+      }
+    }
+
+    starlogIcon.addEventListener("click", function () {
+      handleIconTap(starlogIcon, starlogScreen);
+    });
+
+    doodleIcon.addEventListener("click", function () {
+      handleIconTap(doodleIcon, doodleScreen);
+    });
+
+    mixIcon.addEventListener("click", function () {
+      handleIconTap(mixIcon, mixScreen);
+    });
+
+    var starContent = [
+      {
+        title: "hello stars",
+        date: "hallo :3",
+        body: `
+          <p contenteditable="true">welcome to <strong>star log</strong> ^-^ — this is the lil corner of MingOS where i scribble down every thought that floats up while staring at the sky :3</p>
+          <blockquote contenteditable="true">we are all made of star stuff<br>~ some very smart person probably</blockquote>
+          <p contenteditable="true">scroll the side bar to read my other late-night brain transmissions. ad astra!! ✦</p>
+        `
+      },
+      {
+        title: "moon was loud",
+        date: "07/04/2026",
+        body: `
+          <p contenteditable="true">full moon tonight and it would NOT stop staring at me. rude -_-</p>
+          <p contenteditable="true">note to self: buy bigger curtains. or befriend the moon. currently undecided.</br><small>(or maybe i'll kidnap it! >:3)</small></p>
+        `
+      },
+      {
+        title: "to-do list",
+        date: "06/07/2026",
+        body: `
+          <p contenteditable="true">things to do before the next comet swings by:</p>
+          <p contenteditable="true">1. learn the names of 3 constellations<br>2. pet cats :3<br>3. cuddle up and sleep with my plushies</p>
+        `
+      }
+    ];
+
+    function setActiveSidebar(sidebar, index) {
+      var items = sidebar.querySelectorAll(".sidebar-item");
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.remove("active");
+      }
+      if (items[index]) {
+        items[index].classList.add("active");
+      }
+    }
+
+    function setStarContent(index) {
+      var note = starContent[index];
+      var notePanel = document.querySelector("#starlogcontent");
+      notePanel.innerHTML =
+        "<h2>" + note.title + "</h2>" +
+        "<p class='n-date'>" + note.date + "</p>" +
+        note.body;
+      setActiveSidebar(starlogSidebar, index);
+    }
+
+    function addToSidebar(index) {
+      var note = starContent[index];
+      var newDiv = document.createElement("div");
+      newDiv.className = "sidebar-item";
+      newDiv.innerHTML =
+        "<p class='s-title'>" + note.title + "</p>" +
+        "<p class='s-date'>" + note.date + "</p>";
+      newDiv.addEventListener("click", function () {
+        setStarContent(index);
+      });
+      starlogSidebar.appendChild(newDiv);
+    }
+
+    for (var i = 0; i < starContent.length; i++) {
+      addToSidebar(i);
+    }
+
+    setStarContent(0);
+
+    var doodleContent = [
+      {
+        title: "sketchbook",
+        date: "page one",
+        body: `
+          <div class="doodle-frame">[ drop your doodle here ]</div>
+          <p contenteditable="true">first page of the sketchbook!! mostly cats and little stars so far :3</p>
+        `
+      },
+      {
+        title: "cat #4",
+        date: "he is normal",
+        body: `
+          <div class="doodle-frame">[ cat doodle ]</div>
+          <p contenteditable="true">drew this cat. he has too many whiskers but we love him anyway ^-^</p>
+        `
+      },
+      {
+        title: "star map",
+        date: "totally real",
+        body: `
+          <div class="doodle-frame">[ star map ]</div>
+          <p contenteditable="true">a map of stars i definitely did not make up. that one's called the big spoon.</p>
+        `
+      }
+    ];
+
+    function setDoodleContent(index) {
+      var doodle = doodleContent[index];
+      var doodlePanel = document.querySelector("#doodlecontent");
+      doodlePanel.innerHTML =
+        "<h2>" + doodle.title + "</h2>" +
+        "<p class='n-date'>" + doodle.date + "</p>" +
+        doodle.body;
+      setActiveSidebar(doodleSidebar, index);
+    }
+
+    function addToDoodleSidebar(index) {
+      var doodle = doodleContent[index];
+      var newDiv = document.createElement("div");
+      newDiv.className = "sidebar-item";
+      newDiv.innerHTML =
+        "<p class='s-title'>" + doodle.title + "</p>" +
+        "<p class='s-date'>" + doodle.date + "</p>";
+      newDiv.addEventListener("click", function () {
+        setDoodleContent(index);
+      });
+      doodleSidebar.appendChild(newDiv);
+    }
+
+    for (var j = 0; j < doodleContent.length; j++) {
+      addToDoodleSidebar(j);
+    }
+
+    setDoodleContent(0);
+
+    var mixContent = [
+      {
+        title: "night drive",
+        date: "6 songs",
+        body: `
+          <p contenteditable="true">songs for when it's late and the streetlights blur into little stars ✦</p>
+          <blockquote contenteditable="true">1. slow synths<br>2. the one with those fire beats<br>3. moments with you<br>4. rain on the window.mp3</blockquote>
+          <p contenteditable="true">press play in your head. trust.</p>
+        `
+      },
+      {
+        title: "study brain",
+        date: "4 songs",
+        body: `
+          <p contenteditable="true">lo-fi loops to trick my brain into focusing for at least six or seven whole minutes :3</p>
+          <blockquote contenteditable="true">tong hua · soft piano · illit! · he ping fen shou</blockquote>
+        `
+      },
+      {
+        title: "hype !!",
+        date: "3 songs",
+        body: `
+          <p contenteditable="true">for cleaning my room and pretending it's a movie montage</p>
+          <blockquote contenteditable="true">la vaguelette · absolutio absoluta absolutissime · feng qi le</blockquote>
+        `
+      }
+    ];
+
+    function setMixContent(index) {
+      var mix = mixContent[index];
+      var mixPanel = document.querySelector("#mixcontent");
+      mixPanel.innerHTML =
+        "<h2>" + mix.title + "</h2>" +
+        "<p class='n-date'>" + mix.date + "</p>" +
+        mix.body;
+      setActiveSidebar(mixSidebar, index);
+    }
+
+    function addToMixSidebar(index) {
+      var mix = mixContent[index];
+      var newDiv = document.createElement("div");
+      newDiv.className = "sidebar-item";
+      newDiv.innerHTML =
+        "<p class='s-title'>" + mix.title + "</p>" +
+        "<p class='s-date'>" + mix.date + "</p>";
+      newDiv.addEventListener("click", function () {
+        setMixContent(index);
+      });
+      mixSidebar.appendChild(newDiv);
+    }
+
+    for (var k = 0; k < mixContent.length; k++) {
+      addToMixSidebar(k);
+    }
+
+    setMixContent(0);
+  </script>
+
+</body>
+
+</html>
