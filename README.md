@@ -4,4 +4,6 @@ did this for stardance hackclub, i'm still figuring out devlogs so i just decide
 
 hope you enjoy!
 
-log 5 is probably going to be final unless i decide to add something else
+
+
+i gave up devlogging after log 7 -_-
