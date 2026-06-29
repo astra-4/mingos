@@ -491,6 +491,34 @@
       overflow-y: auto;
     }
 
+    .add-log {
+      width: 100%;
+      padding: 11px 13px;
+      margin-bottom: 8px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      background: #1f6bff;
+      border: none;
+      box-shadow: 0 6px 16px -6px rgba(31, 107, 255, 0.6);
+      transition: transform 0.15s ease;
+    }
+
+    .add-log:hover {
+      transform: translateY(-1px);
+    }
+
+    .sidebar-tip {
+      margin: 0 4px 12px;
+      font-family: monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #8ea0c8;
+    }
+
     .sidebar-item {
       padding: 11px 13px;
       margin-bottom: 8px;
@@ -583,6 +611,120 @@
       font-family: monospace;
       font-size: 12px;
       color: #7d93c4;
+      overflow: hidden;
+    }
+
+    .doodle-art {
+      width: 70%;
+      height: 70%;
+    }
+
+    .doodle-frame.editable {
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .doodle-frame.editable:hover {
+      border-color: #1f6bff;
+      background-color: #e4eeff;
+    }
+
+    .doodle-frame.dragover {
+      border-color: #1f6bff;
+      background-color: #d8e7ff;
+    }
+
+    .doodle-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    .doodle-input {
+      display: none;
+    }
+
+    .sketch-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: 420px;
+    }
+
+    .sketch-tools {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .tool-label {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #8ea0c8;
+      margin-right: 2px;
+    }
+
+    .swatch {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(40, 70, 140, 0.25);
+      transition: transform 0.15s ease;
+    }
+
+    .swatch:hover {
+      transform: scale(1.14);
+    }
+
+    .swatch.active {
+      box-shadow: 0 0 0 2px #1c2f59;
+    }
+
+    .tool-spacer {
+      flex: 1;
+    }
+
+    .tool-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #1f6bff;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid #1f6bff;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tool-btn:hover {
+      color: #fff;
+      background: #1f6bff;
+    }
+
+    .tool-btn.active {
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 0 14px rgba(31, 107, 255, 0.5);
+    }
+
+    .sketch-canvas {
+      width: 100%;
+      height: 330px;
+      border-radius: 18px;
+      border: 2px dashed #a9c4f5;
+      background: #f7faff;
+      cursor: crosshair;
+      display: block;
+      touch-action: none;
     }
   </style>
 </head>
@@ -617,6 +759,11 @@
   <div class="app-icon" id="mixicon" style="top: 64px; left: 222px;">
     <div class="icon-art">♪</div>
     <p class="icon-label">Mixtape</p>
+  </div>
+
+  <div class="app-icon" id="sketchicon" style="top: 64px; left: 324px;">
+    <div class="icon-art">✐</div>
+    <p class="icon-label">Sketch</p>
   </div>
 
   <div class="flower tl">
@@ -792,7 +939,10 @@
     </div>
 
     <div class="app-body">
-      <div class="sidebar" id="starlogsidebar"></div>
+      <div class="sidebar" id="starlogsidebar">
+        <button class="add-log" id="starlogadd">+ new log</button>
+        <p class="sidebar-tip">tip: hit + to add your own ✦ your entries are editable!</p>
+      </div>
       <div class="note-panel" id="starlogcontent"></div>
     </div>
 
@@ -810,7 +960,10 @@
     </div>
 
     <div class="app-body">
-      <div class="sidebar" id="doodlesidebar"></div>
+      <div class="sidebar" id="doodlesidebar">
+        <button class="add-log" id="doodleadd">+ new doodle</button>
+        <p class="sidebar-tip">tip: hit + to start your own ✎ drag in or click the frame to add an image!</p>
+      </div>
       <div class="note-panel" id="doodlecontent"></div>
     </div>
 
@@ -828,8 +981,41 @@
     </div>
 
     <div class="app-body">
-      <div class="sidebar" id="mixsidebar"></div>
+      <div class="sidebar" id="mixsidebar">
+        <button class="add-log" id="mixadd">+ new mix</button>
+        <p class="sidebar-tip">tip: hit + to add your own ♪ your entries are editable!</p>
+      </div>
       <div class="note-panel" id="mixcontent"></div>
+    </div>
+
+  </div>
+
+  <div class="card" id="sketch" style="display: none; max-width: 720px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="sketchheader">
+      <div class="wdots">
+        <span class="wdot close" id="sketchclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">sketch ✐</span>
+    </div>
+
+    <div class="sketch-body">
+      <div class="sketch-tools">
+        <span class="tool-label">colors</span>
+        <button class="swatch" style="background: #1f6bff;" data-color="#1f6bff"></button>
+        <button class="swatch" style="background: #ff8095;" data-color="#ff8095"></button>
+        <button class="swatch" style="background: #c4baff;" data-color="#c4baff"></button>
+        <button class="swatch" style="background: #7fd8b0;" data-color="#7fd8b0"></button>
+        <button class="swatch" style="background: #ffd166;" data-color="#ffd166"></button>
+        <button class="swatch" style="background: #21345f;" data-color="#21345f"></button>
+        <div class="tool-spacer"></div>
+        <button class="tool-btn" id="erasertool">eraser</button>
+        <button class="tool-btn" id="undotool">undo</button>
+        <button class="tool-btn" id="cleartool">clear</button>
+      </div>
+      <canvas class="sketch-canvas" id="sketchcanvas" width="632" height="330"></canvas>
     </div>
 
   </div>
@@ -877,9 +1063,11 @@
     dragElement(document.getElementById("starlog"));
     dragElement(document.getElementById("doodle"));
     dragElement(document.getElementById("mix"));
+    dragElement(document.getElementById("sketch"));
     dragElement(document.getElementById("starlogicon"));
     dragElement(document.getElementById("doodleicon"));
     dragElement(document.getElementById("mixicon"));
+    dragElement(document.getElementById("sketchicon"));
 
     function dragElement(element) {
       var initialX = 0;
@@ -943,6 +1131,10 @@
     var mixIcon = document.querySelector("#mixicon");
     var mixSidebar = document.querySelector("#mixsidebar");
 
+    var sketchScreen = document.querySelector("#sketch");
+    var sketchScreenClose = document.querySelector("#sketchclose");
+    var sketchIcon = document.querySelector("#sketchicon");
+
     function closeWindow(element) {
       element.style.display = "none";
     }
@@ -971,6 +1163,7 @@
     addWindowTapHandling(starlogScreen);
     addWindowTapHandling(doodleScreen);
     addWindowTapHandling(mixScreen);
+    addWindowTapHandling(sketchScreen);
 
     welcomeScreenClose.addEventListener("click", function () {
       closeWindow(welcomeScreen);
@@ -996,6 +1189,10 @@
 
     mixScreenClose.addEventListener("click", function () {
       closeWindow(mixScreen);
+    });
+
+    sketchScreenClose.addEventListener("click", function () {
+      closeWindow(sketchScreen);
     });
 
     var selectedIcon = undefined;
@@ -1036,33 +1233,9 @@
       handleIconTap(mixIcon, mixScreen);
     });
 
-    var starContent = [
-      {
-        title: "hello stars",
-        date: "hallo :3",
-        body: `
-          <p contenteditable="true">welcome to <strong>star log</strong> ^-^ — this is the lil corner of MingOS where i scribble down every thought that floats up while staring at the sky :3</p>
-          <blockquote contenteditable="true">we are all made of star stuff<br>~ some very smart person probably</blockquote>
-          <p contenteditable="true">scroll the side bar to read my other late-night brain transmissions. ad astra!! ✦</p>
-        `
-      },
-      {
-        title: "moon was loud",
-        date: "07/04/2026",
-        body: `
-          <p contenteditable="true">full moon tonight and it would NOT stop staring at me. rude -_-</p>
-          <p contenteditable="true">note to self: buy bigger curtains. or befriend the moon. currently undecided.</br><small>(or maybe i'll kidnap it! >:3)</small></p>
-        `
-      },
-      {
-        title: "to-do list",
-        date: "06/07/2026",
-        body: `
-          <p contenteditable="true">things to do before the next comet swings by:</p>
-          <p contenteditable="true">1. learn the names of 3 constellations<br>2. pet cats :3<br>3. cuddle up and sleep with my plushies</p>
-        `
-      }
-    ];
+    sketchIcon.addEventListener("click", function () {
+      handleIconTap(sketchIcon, sketchScreen);
+    });
 
     function setActiveSidebar(sidebar, index) {
       var items = sidebar.querySelectorAll(".sidebar-item");
@@ -1074,14 +1247,76 @@
       }
     }
 
+    function updateSidebarItem(sidebar, index, item) {
+      var items = sidebar.querySelectorAll(".sidebar-item");
+      if (items[index]) {
+        items[index].querySelector(".s-title").innerText = item.title;
+        items[index].querySelector(".s-date").innerText = item.date;
+      }
+    }
+
+    var starContent = [
+      {
+        title: "hello stars",
+        date: "hallo :3",
+        body: `
+          <p>welcome to <strong>star log</strong> ^-^ — this is the lil corner of MingOS where i scribble down every thought that floats up while staring at the sky :3</p>
+          <blockquote>we are all made of star stuff<br>~ some very smart person probably</blockquote>
+          <p>scroll the side bar to read my other late-night brain transmissions. ad astra!! ✦</p>
+        `
+      },
+      {
+        title: "moon was loud",
+        date: "07/04/2026",
+        body: `
+          <p>full moon tonight and it would NOT stop staring at me. rude -_-</p>
+          <p>note to self: buy bigger curtains. or befriend the moon. currently undecided.</br><small>(or maybe i'll kidnap it! >:3)</small></p>
+        `
+      },
+      {
+        title: "to-do list",
+        date: "06/07/2026",
+        body: `
+          <p>things to do before the next comet swings by:</p>
+          <p>1. learn the names of 3 constellations<br>2. pet cats :3<br>3. cuddle up and sleep with my plushies</p>
+        `
+      }
+    ];
+
     function setStarContent(index) {
       var note = starContent[index];
       var notePanel = document.querySelector("#starlogcontent");
+
+      if (note.locked) {
+        notePanel.innerHTML =
+          "<h2>" + note.title + "</h2>" +
+          "<p class='n-date'>" + note.date + "</p>" +
+          note.body;
+        setActiveSidebar(starlogSidebar, index);
+        return;
+      }
+
       notePanel.innerHTML =
-        "<h2>" + note.title + "</h2>" +
-        "<p class='n-date'>" + note.date + "</p>" +
-        note.body;
+        "<h2 contenteditable='true'>" + note.title + "</h2>" +
+        "<p class='n-date' contenteditable='true'>" + note.date + "</p>" +
+        "<div class='note-edit' contenteditable='true'>" + note.body + "</div>";
       setActiveSidebar(starlogSidebar, index);
+
+      var titleEl = notePanel.querySelector("h2");
+      var dateEl = notePanel.querySelector(".n-date");
+      var bodyEl = notePanel.querySelector(".note-edit");
+
+      titleEl.addEventListener("input", function () {
+        note.title = titleEl.innerText;
+        updateSidebarItem(starlogSidebar, index, note);
+      });
+      dateEl.addEventListener("input", function () {
+        note.date = dateEl.innerText;
+        updateSidebarItem(starlogSidebar, index, note);
+      });
+      bodyEl.addEventListener("input", function () {
+        note.body = bodyEl.innerHTML;
+      });
     }
 
     function addToSidebar(index) {
@@ -1098,46 +1333,163 @@
     }
 
     for (var i = 0; i < starContent.length; i++) {
+      starContent[i].locked = true;
       addToSidebar(i);
     }
 
     setStarContent(0);
 
+    var starlogAdd = document.querySelector("#starlogadd");
+
+    function addNewStar() {
+      var newNote = {
+        title: "new log",
+        date: "today",
+        body: "<p>write your own thoughts here ✦</p>"
+      };
+      starContent.push(newNote);
+      var index = starContent.length - 1;
+      addToSidebar(index);
+      setStarContent(index);
+    }
+
+    starlogAdd.addEventListener("click", addNewStar);
+
     var doodleContent = [
       {
         title: "sketchbook",
         date: "page one",
-        body: `
-          <div class="doodle-frame">[ insert a very good doodle here ]</div>
-          <p contenteditable="true">first page of the sketchbook!! mostly cats and little stars so far :3</p>
-        `
+        img: "",
+        art: `
+          <svg class="doodle-art" viewBox="0 0 200 160" fill="none" stroke="#1f6bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M100 30 L111 72 L153 83 L111 94 L100 136 L89 94 L47 83 L89 72 Z" fill="#1f6bff" stroke="none"/>
+            <circle cx="42" cy="40" r="4" fill="#1f6bff"/>
+            <circle cx="162" cy="118" r="5" fill="#1f6bff"/>
+            <path d="M148 44 q9 -9 18 0"/>
+          </svg>
+        `,
+        caption: "first page of the sketchbook!! mostly cats and little stars so far :3"
       },
       {
         title: "cat #4",
         date: "he is normal",
-        body: `
-          <div class="doodle-frame">[ cat doodle ]</div>
-          <p contenteditable="true">drew this cat. he has too many whiskers but we love him anyway ^-^</p>
-        `
+        img: "",
+        art: `
+          <svg class="doodle-art" viewBox="0 0 200 160" fill="none" stroke="#1f6bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M70 42 L55 18 L80 33"/>
+            <path d="M130 42 L145 18 L120 33"/>
+            <circle cx="100" cy="82" r="42"/>
+            <circle cx="85" cy="74" r="3.5" fill="#1f6bff"/>
+            <circle cx="115" cy="74" r="3.5" fill="#1f6bff"/>
+            <path d="M95 90 Q100 96 105 90"/>
+            <path d="M58 80 H78 M58 88 H78"/>
+            <path d="M122 80 H142 M122 88 H142"/>
+          </svg>
+        `,
+        caption: "drew this cat. he has too many whiskers but we love him anyway ^-^"
       },
       {
         title: "star map",
         date: "totally real",
-        body: `
-          <div class="doodle-frame">[ star map ]</div>
-          <p contenteditable="true">a map of stars i definitely did not make up. that one's called the big spoon.</p>
-        `
+        img: "",
+        art: `
+          <svg class="doodle-art" viewBox="0 0 200 160" fill="none" stroke="#1f6bff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="30,118 62,88 102,100 140,58 172,40"/>
+            <circle cx="30" cy="118" r="4" fill="#1f6bff"/>
+            <circle cx="62" cy="88" r="4" fill="#1f6bff"/>
+            <circle cx="102" cy="100" r="5" fill="#1f6bff"/>
+            <circle cx="140" cy="58" r="4" fill="#1f6bff"/>
+            <circle cx="172" cy="40" r="6" fill="#1f6bff"/>
+            <circle cx="48" cy="40" r="3" fill="#1f6bff"/>
+            <circle cx="120" cy="120" r="3" fill="#1f6bff"/>
+          </svg>
+        `,
+        caption: "a map of stars i definitely did not make up. that one's called the big spoon."
       }
     ];
 
     function setDoodleContent(index) {
       var doodle = doodleContent[index];
       var doodlePanel = document.querySelector("#doodlecontent");
+
+      if (doodle.locked) {
+        var lockedInside = "[ no doodle yet ]";
+        if (doodle.art) {
+          lockedInside = doodle.art;
+        }
+        doodlePanel.innerHTML =
+          "<h2>" + doodle.title + "</h2>" +
+          "<p class='n-date'>" + doodle.date + "</p>" +
+          "<div class='doodle-frame'>" + lockedInside + "</div>" +
+          "<p>" + doodle.caption + "</p>";
+        setActiveSidebar(doodleSidebar, index);
+        return;
+      }
+
+      var frameInside = "[ drag an image here, or click to add ]";
+      if (doodle.img) {
+        frameInside = "<img class='doodle-img' src='" + doodle.img + "'>";
+      }
+
       doodlePanel.innerHTML =
-        "<h2>" + doodle.title + "</h2>" +
-        "<p class='n-date'>" + doodle.date + "</p>" +
-        doodle.body;
+        "<h2 contenteditable='true'>" + doodle.title + "</h2>" +
+        "<p class='n-date' contenteditable='true'>" + doodle.date + "</p>" +
+        "<label class='doodle-frame editable'>" +
+          frameInside +
+          "<input type='file' accept='image/*' class='doodle-input'>" +
+        "</label>" +
+        "<p class='doodle-caption' contenteditable='true'>" + doodle.caption + "</p>";
+
       setActiveSidebar(doodleSidebar, index);
+
+      var titleEl = doodlePanel.querySelector("h2");
+      var dateEl = doodlePanel.querySelector(".n-date");
+      var captionEl = doodlePanel.querySelector(".doodle-caption");
+      var fileInput = doodlePanel.querySelector(".doodle-input");
+      var frame = doodlePanel.querySelector(".doodle-frame");
+
+      titleEl.addEventListener("input", function () {
+        doodle.title = titleEl.innerText;
+        updateSidebarItem(doodleSidebar, index, doodle);
+      });
+      dateEl.addEventListener("input", function () {
+        doodle.date = dateEl.innerText;
+        updateSidebarItem(doodleSidebar, index, doodle);
+      });
+      captionEl.addEventListener("input", function () {
+        doodle.caption = captionEl.innerText;
+      });
+
+      function loadDoodleImage(file) {
+        if (!file) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function () {
+          doodle.img = reader.result;
+          setDoodleContent(index);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      fileInput.addEventListener("change", function () {
+        loadDoodleImage(fileInput.files[0]);
+      });
+
+      frame.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        frame.classList.add("dragover");
+      });
+
+      frame.addEventListener("dragleave", function () {
+        frame.classList.remove("dragover");
+      });
+
+      frame.addEventListener("drop", function (e) {
+        e.preventDefault();
+        frame.classList.remove("dragover");
+        loadDoodleImage(e.dataTransfer.files[0]);
+      });
     }
 
     function addToDoodleSidebar(index) {
@@ -1154,35 +1506,54 @@
     }
 
     for (var j = 0; j < doodleContent.length; j++) {
+      doodleContent[j].locked = true;
       addToDoodleSidebar(j);
     }
 
     setDoodleContent(0);
+
+    var doodleAdd = document.querySelector("#doodleadd");
+
+    function addNewDoodle() {
+      var newDoodle = {
+        title: "new doodle",
+        date: "today",
+        img: "",
+        art: "",
+        caption: "drag in your own doodle and write about it here :3"
+      };
+      doodleContent.push(newDoodle);
+      var index = doodleContent.length - 1;
+      addToDoodleSidebar(index);
+      setDoodleContent(index);
+    }
+
+    doodleAdd.addEventListener("click", addNewDoodle);
 
     var mixContent = [
       {
         title: "night drive",
         date: "6 songs",
         body: `
-          <p contenteditable="true">songs for when it's late and the streetlights blur into little stars ✦</p>
-          <blockquote contenteditable="true">1. slow synths<br>2. the one with those fire beats<br>3. moments with you<br>4. rain on the window.mp3</blockquote>
-          <p contenteditable="true">press play in your head. trust.</p>
+          <p>songs for when it's late and the streetlights blur into little stars ✦</p>
+          <blockquote>1. slow synths<br>2. the one with those fire beats<br>3. moments with you<br>4. rain on the window.mp3</blockquote>
+          <p>press play in your head. trust.</p>
         `
       },
       {
         title: "study brain",
         date: "4 songs",
         body: `
-          <p contenteditable="true">lo-fi loops to trick my brain into focusing for at least six or seven whole minutes :3</p>
-          <blockquote contenteditable="true">tong hua · soft piano · illit! · he ping fen shou</blockquote>
+          <p>lo-fi loops to trick my brain into focusing for at least six or seven whole minutes :3</p>
+          <blockquote>tong hua · soft piano · illit! · he ping fen shou</blockquote>
         `
       },
       {
         title: "hype !!",
         date: "3 songs",
         body: `
-          <p contenteditable="true">for cleaning my room and pretending it's a movie montage</p>
-          <blockquote contenteditable="true">la vaguelette · absolutio absoluta absolutissime · feng qi le</blockquote>
+          <p>for cleaning my room and pretending it's a movie montage</p>
+          <blockquote>la vaguelette · absolutio absoluta absolutissime · feng qi le</blockquote>
         `
       }
     ];
@@ -1190,11 +1561,37 @@
     function setMixContent(index) {
       var mix = mixContent[index];
       var mixPanel = document.querySelector("#mixcontent");
+
+      if (mix.locked) {
+        mixPanel.innerHTML =
+          "<h2>" + mix.title + "</h2>" +
+          "<p class='n-date'>" + mix.date + "</p>" +
+          mix.body;
+        setActiveSidebar(mixSidebar, index);
+        return;
+      }
+
       mixPanel.innerHTML =
-        "<h2>" + mix.title + "</h2>" +
-        "<p class='n-date'>" + mix.date + "</p>" +
-        mix.body;
+        "<h2 contenteditable='true'>" + mix.title + "</h2>" +
+        "<p class='n-date' contenteditable='true'>" + mix.date + "</p>" +
+        "<div class='note-edit' contenteditable='true'>" + mix.body + "</div>";
       setActiveSidebar(mixSidebar, index);
+
+      var titleEl = mixPanel.querySelector("h2");
+      var dateEl = mixPanel.querySelector(".n-date");
+      var bodyEl = mixPanel.querySelector(".note-edit");
+
+      titleEl.addEventListener("input", function () {
+        mix.title = titleEl.innerText;
+        updateSidebarItem(mixSidebar, index, mix);
+      });
+      dateEl.addEventListener("input", function () {
+        mix.date = dateEl.innerText;
+        updateSidebarItem(mixSidebar, index, mix);
+      });
+      bodyEl.addEventListener("input", function () {
+        mix.body = bodyEl.innerHTML;
+      });
     }
 
     function addToMixSidebar(index) {
@@ -1211,10 +1608,158 @@
     }
 
     for (var k = 0; k < mixContent.length; k++) {
+      mixContent[k].locked = true;
       addToMixSidebar(k);
     }
 
     setMixContent(0);
+
+    var mixAdd = document.querySelector("#mixadd");
+
+    function addNewMix() {
+      var newMix = {
+        title: "new mix",
+        date: "0 songs",
+        body: "<p>add your own songs here ♪</p>"
+      };
+      mixContent.push(newMix);
+      var index = mixContent.length - 1;
+      addToMixSidebar(index);
+      setMixContent(index);
+    }
+
+    mixAdd.addEventListener("click", addNewMix);
+
+    var sketchCanvas = document.querySelector("#sketchcanvas");
+    var sketchCtx = sketchCanvas.getContext("2d");
+    var eraserTool = document.querySelector("#erasertool");
+    var undoTool = document.querySelector("#undotool");
+    var clearTool = document.querySelector("#cleartool");
+    var swatches = document.querySelectorAll(".swatch");
+
+    var eraserColor = "#f7faff";
+    var brushColor = "#1f6bff";
+    var brushSize = 4;
+    var eraserSize = 20;
+    var erasing = false;
+
+    var strokes = [];
+    var currentStroke = null;
+    var drawing = false;
+
+    function getCanvasPos(e) {
+      var rect = sketchCanvas.getBoundingClientRect();
+      var x = (e.clientX - rect.left) * (sketchCanvas.width / rect.width);
+      var y = (e.clientY - rect.top) * (sketchCanvas.height / rect.height);
+      return { x: x, y: y };
+    }
+
+    function redrawSketch() {
+      sketchCtx.clearRect(0, 0, sketchCanvas.width, sketchCanvas.height);
+      sketchCtx.lineCap = "round";
+      sketchCtx.lineJoin = "round";
+
+      for (var s = 0; s < strokes.length; s++) {
+        var stroke = strokes[s];
+        sketchCtx.strokeStyle = stroke.color;
+        sketchCtx.lineWidth = stroke.size;
+        sketchCtx.beginPath();
+
+        for (var p = 0; p < stroke.points.length; p++) {
+          var point = stroke.points[p];
+          if (p === 0) {
+            sketchCtx.moveTo(point.x, point.y);
+          } else {
+            sketchCtx.lineTo(point.x, point.y);
+          }
+        }
+
+        if (stroke.points.length === 1) {
+          var only = stroke.points[0];
+          sketchCtx.lineTo(only.x + 0.1, only.y + 0.1);
+        }
+
+        sketchCtx.stroke();
+      }
+    }
+
+    function startSketch(e) {
+      e.preventDefault();
+      drawing = true;
+      var color = brushColor;
+      var size = brushSize;
+      if (erasing) {
+        color = eraserColor;
+        size = eraserSize;
+      }
+      currentStroke = { color: color, size: size, points: [getCanvasPos(e)] };
+      strokes.push(currentStroke);
+      redrawSketch();
+    }
+
+    function moveSketch(e) {
+      if (!drawing) {
+        return;
+      }
+      e.preventDefault();
+      currentStroke.points.push(getCanvasPos(e));
+      redrawSketch();
+    }
+
+    function stopSketch() {
+      drawing = false;
+      currentStroke = null;
+    }
+
+    sketchCanvas.addEventListener("mousedown", startSketch);
+    sketchCanvas.addEventListener("mousemove", moveSketch);
+    document.addEventListener("mouseup", stopSketch);
+
+    function undoStroke() {
+      strokes.pop();
+      redrawSketch();
+    }
+
+    undoTool.addEventListener("click", undoStroke);
+
+    clearTool.addEventListener("click", function () {
+      strokes = [];
+      redrawSketch();
+    });
+
+    eraserTool.addEventListener("click", function () {
+      erasing = !erasing;
+      if (erasing) {
+        eraserTool.classList.add("active");
+      } else {
+        eraserTool.classList.remove("active");
+      }
+    });
+
+    function selectSwatch(element) {
+      for (var i = 0; i < swatches.length; i++) {
+        swatches[i].classList.remove("active");
+      }
+      element.classList.add("active");
+      brushColor = element.getAttribute("data-color");
+      erasing = false;
+      eraserTool.classList.remove("active");
+    }
+
+    for (var c = 0; c < swatches.length; c++) {
+      swatches[c].addEventListener("click", function () {
+        selectSwatch(this);
+      });
+    }
+
+    swatches[0].classList.add("active");
+
+    document.addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === "z" || e.key === "Z")) {
+        e.preventDefault();
+        undoStroke();
+      }
+    });
   </script>
 
 </body>
