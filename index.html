@@ -1140,7 +1140,7 @@
       text-align: left;
     }
 
-    .pet-state-label {
+    .pet-stat-label {
       margin: 0 0 5px;
       font-family: 'Quicksand', sans-serif;
       font-weight: 600;
@@ -1306,7 +1306,7 @@
 
   <div class="app-icon" id="peticon" style="top: 64px; left: 528px;">
     <div class="icon-art">❀</div>
-    <p class="icon-label">Sunny</p>
+    <p class="icon-label">Plushie</p>
   </div>
 
   <div class="flower tl">
@@ -1568,7 +1568,7 @@
 
   </div>
 
-   <div class="card" id="guestbook" style="display: none; max-width: 640px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+  <div class="card" id="guestbook" style="display: none; max-width: 640px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
 
     <div class="windowheader" id="guestbookheader">
       <div class="wdots">
@@ -1626,7 +1626,7 @@
     </div>
 
   </div>
- 
+
   <div class="dock" id="dock">
     <div class="dock-item" id="dockwelcome">
       ✿
@@ -1660,7 +1660,7 @@
     </div>
     <div class="dock-item" id="dockpet">
       ❀
-      <span class="dock-tip">Sunny</span>
+      <span class="dock-tip">plushie</span>
       <span class="dock-dot"></span>
     </div>
   </div>
@@ -2665,7 +2665,7 @@
     var guestbookIcon = document.querySelector("#guestbookicon");
 
     var petScreen = document.querySelector("#pet");
-    var petScreeClose = document.querySelector("#petclose");
+    var petScreenClose = document.querySelector("#petclose");
     var petIcon = document.querySelector("#peticon");
 
     addWindowTapHandling(guestbookScreen);
