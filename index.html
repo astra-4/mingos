@@ -1670,6 +1670,19 @@
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+    // Safely parse saved data: returns fallback if missing OR corrupt,
+    // so one bad localStorage value can't crash the rest of the boot.
+    function safeParse(raw, fallback) {
+      if (!raw) {
+        return fallback;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (err) {
+        return fallback;
+      }
+    }
+
     function updateClock() {
       var now = new Date();
 
@@ -2092,9 +2105,9 @@
       localStorage.setItem("mingos_star", JSON.stringify(starContent));
     }
 
-    var savedStar = localStorage.getItem("mingos_star");
+    var savedStar = safeParse(localStorage.getItem("mingos_star"), null);
     if (savedStar) {
-      starContent = JSON.parse(savedStar);
+      starContent = savedStar;
     } else {
       for (var sk = 0; sk < starContent.length; sk++) {
         starContent[sk].locked = true;
@@ -2282,9 +2295,9 @@
       localStorage.setItem("mingos_doodle", JSON.stringify(doodleContent));
     }
 
-    var savedDoodle = localStorage.getItem("mingos_doodle");
+    var savedDoodle = safeParse(localStorage.getItem("mingos_doodle"), null);
     if (savedDoodle) {
-      doodleContent = JSON.parse(savedDoodle);
+      doodleContent = savedDoodle;
     } else {
       for (var dk = 0; dk < doodleContent.length; dk++) {
         doodleContent[dk].locked = true;
@@ -2448,9 +2461,9 @@
       mixSidebar.appendChild(newDiv);
     }
 
-    var savedMix = localStorage.getItem("mingos_mix");
+    var savedMix = safeParse(localStorage.getItem("mingos_mix"), null);
     if (savedMix) {
-      mixContent = JSON.parse(savedMix);
+      mixContent = savedMix;
     } else {
       for (var mk = 0; mk < mixContent.length; mk++) {
         mixContent[mk].locked = true;
@@ -2498,9 +2511,9 @@
     var currentStroke = null;
     var drawing = false;
 
-    var savedSketch = localStorage.getItem("mingos_sketch");
-    if (savedSketch) {
-      strokes = JSON.parse(savedSketch);
+    var savedSketch = safeParse(localStorage.getItem("mingos_sketch"), null);
+    if (savedSketch && Array.isArray(savedSketch)) {
+      strokes = savedSketch;
     }
 
     function getCanvasPos(e) {
@@ -2767,9 +2780,9 @@
       msgInput.value = "";
     }
 
-    var savedGuestbook = localStorage.getItem("mingos_guestbook");
-    if (savedGuestbook) {
-      gbEntries = JSON.parse(savedGuestbook);
+    var savedGuestbook = safeParse(localStorage.getItem("mingos_guestbook"), null);
+    if (savedGuestbook && Array.isArray(savedGuestbook)) {
+      gbEntries = savedGuestbook;
     }
 
     renderGuestbook();
@@ -2859,9 +2872,9 @@
       reactCreature("٩(ˊᗜˋ*)و");
     }
 
-    var savedPet = localStorage.getItem("mingos_pet");
+    var savedPet = safeParse(localStorage.getItem("mingos_pet"), null);
     if (savedPet) {
-      petState = JSON.parse(savedPet);
+      petState = savedPet;
     }
 
     renderPet();
