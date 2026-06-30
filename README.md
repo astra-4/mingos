@@ -17,6 +17,8 @@ running:
 - use https://astra-4.github.io/mingos/
 - OR clone
 
+credits: gud_doodle on instagram for the cat pfp on the welcome page :>
+
 
 did this for stardance hackclub, at the time i was still figuring out devlogs so i just decided to save them as separate files o.o
 
