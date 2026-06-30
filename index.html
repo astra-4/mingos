@@ -623,6 +623,25 @@
       color: #5a6f9e;
     }
 
+    .delete-log {
+      margin-top: 14px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #ff5a74;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid #ff8095;
+      transition: all 0.15s ease;
+    }
+
+    .delete-log:hover {
+      color: #fff;
+      background: #ff8095;
+    }
+
     .doodle-frame {
       width: 100%;
       height: 240px;
@@ -907,6 +926,15 @@
 
     .dock-item {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .dock-glyph {
+      position: relative;
       width: 50px;
       height: 50px;
       border-radius: 16px;
@@ -917,17 +945,24 @@
       justify-content: center;
       font-size: 24px;
       color: #fff;
-      cursor: pointer;
       transition: transform 0.18s ease;
     }
 
-    .dock-item:hover {
+    .dock-item:hover .dock-glyph {
       transform: translateY(-8px);
+    }
+
+    .dock-name {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 11px;
+      color: #2b3f6b;
+      white-space: nowrap;
     }
 
     .dock-dot {
       position: absolute;
-      bottom: -6px;
+      bottom: -5px;
       left: 50%;
       transform: translateX(-50%);
       width: 5px;
@@ -939,28 +974,6 @@
     }
 
     .dock-item.open .dock-dot {
-      opacity: 1;
-    }
-
-    .dock-tip {
-      position: absolute;
-      top: -34px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #2b3f6b;
-      color: #fff;
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 600;
-      font-size: 12px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.15s ease;
-    }
-
-    .dock-item:hover .dock-tip {
       opacity: 1;
     }
 
@@ -1077,6 +1090,21 @@
       font-size: 14px;
       line-height: 1.6;
       color: #4a5d88;
+    }
+
+    .gb-entry-msg[contenteditable="true"] {
+      cursor: text;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+
+    .gb-entry-msg[contenteditable="true"]:hover {
+      background: rgba(31, 107, 255, 0.06);
+    }
+
+    .gb-entry-msg[contenteditable="true"]:focus {
+      outline: none;
+      background: rgba(31, 107, 255, 0.1);
     }
 
     .gb-entry-time {
@@ -1238,6 +1266,10 @@
 
     body.night .dock-dot {
       background: #cdd9ff;
+    }
+
+    body.night .dock-name {
+      color: #cdd9ff;
     }
 
     body.night .shooting-star {
@@ -1629,39 +1661,32 @@
 
   <div class="dock" id="dock">
     <div class="dock-item" id="dockwelcome">
-      ✿
-      <span class="dock-tip">welcome</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">✿<span class="dock-dot"></span></span>
+      <span class="dock-name">welcome</span>
     </div>
     <div class="dock-item" id="dockstarlog">
-      ✦
-      <span class="dock-tip">star log</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">✦<span class="dock-dot"></span></span>
+      <span class="dock-name">star log</span>
     </div>
     <div class="dock-item" id="dockdoodle">
-      ✎
-      <span class="dock-tip">doodles</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">✎<span class="dock-dot"></span></span>
+      <span class="dock-name">doodles</span>
     </div>
     <div class="dock-item" id="dockmix">
-      ♪
-      <span class="dock-tip">mixtape</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">♪<span class="dock-dot"></span></span>
+      <span class="dock-name">mixtape</span>
     </div>
     <div class="dock-item" id="docksketch">
-      ✐
-      <span class="dock-tip">sketch</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">✐<span class="dock-dot"></span></span>
+      <span class="dock-name">sketch</span>
     </div>
     <div class="dock-item" id="dockguestbook">
-      ✉
-      <span class="dock-tip">guestbook</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">✉<span class="dock-dot"></span></span>
+      <span class="dock-name">guestbook</span>
     </div>
     <div class="dock-item" id="dockpet">
-      ❀
-      <span class="dock-tip">sunny</span>
-      <span class="dock-dot"></span>
+      <span class="dock-glyph">❀<span class="dock-dot"></span></span>
+      <span class="dock-name">Sunny</span>
     </div>
   </div>
 
@@ -1670,8 +1695,6 @@
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    // Safely parse saved data: returns fallback if missing OR corrupt,
-    // so one bad localStorage value can't crash the rest of the boot.
     function safeParse(raw, fallback) {
       if (!raw) {
         return fallback;
@@ -1738,6 +1761,29 @@
 
     tickBoot();
 
+    var layout = safeParse(localStorage.getItem("mingos_layout"), {});
+
+    function saveLayout() {
+      localStorage.setItem("mingos_layout", JSON.stringify(layout));
+    }
+
+    function rememberPosition(element) {
+      if (!layout[element.id]) {
+        layout[element.id] = {};
+      }
+      layout[element.id].left = element.style.left;
+      layout[element.id].top = element.style.top;
+      saveLayout();
+    }
+
+    function rememberOpen(element, isOpen) {
+      if (!layout[element.id]) {
+        layout[element.id] = {};
+      }
+      layout[element.id].open = isOpen;
+      saveLayout();
+    }
+
     dragElement(document.getElementById("welcome"));
     dragElement(document.getElementById("starlog"));
     dragElement(document.getElementById("doodle"));
@@ -1785,6 +1831,7 @@
       function stopDragging() {
         document.onmouseup = null;
         document.onmousemove = null;
+        rememberPosition(element);
       }
     }
 
@@ -1816,6 +1863,7 @@
 
     function closeWindow(element) {
       element.style.display = "none";
+      rememberOpen(element, false);
       updateDock();
     }
 
@@ -1824,6 +1872,7 @@
       biggestIndex++;
       element.style.zIndex = biggestIndex;
       topBar.style.zIndex = biggestIndex + 1;
+      rememberOpen(element, true);
       updateDock();
     }
 
@@ -2057,16 +2106,27 @@
         notePanel.innerHTML =
           "<h2>" + note.title + "</h2>" +
           "<p class='n-date'>" + note.date + "</p>" +
-          note.body;
+          note.body +
+          "<button class='delete-log'>delete this log ✕</button>";
         setActiveSidebar(starlogSidebar, index);
+
+        notePanel.querySelector(".delete-log").addEventListener("click", function () {
+          deleteStar(index);
+        });
         return;
       }
 
       notePanel.innerHTML =
         "<h2 contenteditable='true'>" + note.title + "</h2>" +
         "<p class='n-date' contenteditable='true'>" + note.date + "</p>" +
-        "<div class='note-edit' contenteditable='true'>" + note.body + "</div>";
+        "<div class='note-edit' contenteditable='true'>" + note.body + "</div>" +
+        "<button class='delete-log'>delete this log ✕</button>";
       setActiveSidebar(starlogSidebar, index);
+
+      var deleteBtn = notePanel.querySelector(".delete-log");
+      deleteBtn.addEventListener("click", function () {
+        deleteStar(index);
+      });
 
       var titleEl = notePanel.querySelector("h2");
       var dateEl = notePanel.querySelector(".n-date");
@@ -2103,6 +2163,32 @@
 
     function saveStar() {
       localStorage.setItem("mingos_star", JSON.stringify(starContent));
+    }
+
+    function rebuildStarSidebar() {
+      var items = starlogSidebar.querySelectorAll(".sidebar-item");
+      for (var i = 0; i < items.length; i++) {
+        items[i].remove();
+      }
+      for (var j = 0; j < starContent.length; j++) {
+        addToSidebar(j);
+      }
+    }
+
+    function deleteStar(index) {
+      starContent.splice(index, 1);
+      saveStar();
+      rebuildStarSidebar();
+      if (starContent.length === 0) {
+        document.querySelector("#starlogcontent").innerHTML =
+          "<p>no logs yet — hit \"+ new log\" to start one ✦</p>";
+        return;
+      }
+      var next = index;
+      if (next >= starContent.length) {
+        next = starContent.length - 1;
+      }
+      setStarContent(next);
     }
 
     var savedStar = safeParse(localStorage.getItem("mingos_star"), null);
@@ -2203,8 +2289,13 @@
           "<h2>" + doodle.title + "</h2>" +
           "<p class='n-date'>" + doodle.date + "</p>" +
           "<div class='doodle-frame'>" + lockedInside + "</div>" +
-          "<p>" + doodle.caption + "</p>";
+          "<p>" + doodle.caption + "</p>" +
+          "<button class='delete-log'>delete this doodle ✕</button>";
         setActiveSidebar(doodleSidebar, index);
+
+        doodlePanel.querySelector(".delete-log").addEventListener("click", function () {
+          deleteDoodle(index);
+        });
         return;
       }
 
@@ -2220,9 +2311,15 @@
           frameInside +
           "<input type='file' accept='image/*' class='doodle-input'>" +
         "</label>" +
-        "<p class='doodle-caption' contenteditable='true'>" + doodle.caption + "</p>";
+        "<p class='doodle-caption' contenteditable='true'>" + doodle.caption + "</p>" +
+        "<button class='delete-log'>delete this doodle ✕</button>";
 
       setActiveSidebar(doodleSidebar, index);
+
+      var doodleDeleteBtn = doodlePanel.querySelector(".delete-log");
+      doodleDeleteBtn.addEventListener("click", function () {
+        deleteDoodle(index);
+      });
 
       var titleEl = doodlePanel.querySelector("h2");
       var dateEl = doodlePanel.querySelector(".n-date");
@@ -2295,6 +2392,32 @@
       localStorage.setItem("mingos_doodle", JSON.stringify(doodleContent));
     }
 
+    function rebuildDoodleSidebar() {
+      var items = doodleSidebar.querySelectorAll(".sidebar-item");
+      for (var i = 0; i < items.length; i++) {
+        items[i].remove();
+      }
+      for (var j = 0; j < doodleContent.length; j++) {
+        addToDoodleSidebar(j);
+      }
+    }
+
+    function deleteDoodle(index) {
+      doodleContent.splice(index, 1);
+      saveDoodle();
+      rebuildDoodleSidebar();
+      if (doodleContent.length === 0) {
+        document.querySelector("#doodlecontent").innerHTML =
+          "<p>no doodles yet — hit \"+ new doodle\" to start one ✎</p>";
+        return;
+      }
+      var next = index;
+      if (next >= doodleContent.length) {
+        next = doodleContent.length - 1;
+      }
+      setDoodleContent(next);
+    }
+
     var savedDoodle = safeParse(localStorage.getItem("mingos_doodle"), null);
     if (savedDoodle) {
       doodleContent = savedDoodle;
@@ -2364,6 +2487,32 @@
       localStorage.setItem("mingos_mix", JSON.stringify(mixContent));
     }
 
+    function rebuildMixSidebar() {
+      var items = mixSidebar.querySelectorAll(".sidebar-item");
+      for (var i = 0; i < items.length; i++) {
+        items[i].remove();
+      }
+      for (var j = 0; j < mixContent.length; j++) {
+        addToMixSidebar(j);
+      }
+    }
+
+    function deleteMix(index) {
+      mixContent.splice(index, 1);
+      saveMix();
+      rebuildMixSidebar();
+      if (mixContent.length === 0) {
+        document.querySelector("#mixcontent").innerHTML =
+          "<p>no mixes yet — hit \"+ new mix\" to start one ♪</p>";
+        return;
+      }
+      var next = index;
+      if (next >= mixContent.length) {
+        next = mixContent.length - 1;
+      }
+      setMixContent(next);
+    }
+
     function buildTracksHtml(tracks) {
       if (!tracks || tracks.length === 0) {
         return "";
@@ -2413,9 +2562,13 @@
         mixPanel.innerHTML =
           "<h2>" + mix.title + "</h2>" +
           "<p class='n-date'>" + mix.date + "</p>" +
-          mix.body + tracksHtml + mixPlayerHtml;
+          mix.body + tracksHtml + mixPlayerHtml +
+          "<button class='delete-log'>delete this mix ✕</button>";
         setActiveSidebar(mixSidebar, index);
         wireMixPlayer(mixPanel);
+        mixPanel.querySelector(".delete-log").addEventListener("click", function () {
+          deleteMix(index);
+        });
         return;
       }
 
@@ -2423,8 +2576,14 @@
         "<h2 contenteditable='true'>" + mix.title + "</h2>" +
         "<p class='n-date' contenteditable='true'>" + mix.date + "</p>" +
         "<div class='note-edit' contenteditable='true'>" + mix.body + "</div>" +
-        tracksHtml + mixPlayerHtml;
+        tracksHtml + mixPlayerHtml +
+        "<button class='delete-log'>delete this mix ✕</button>";
       setActiveSidebar(mixSidebar, index);
+
+      var mixDeleteBtn = mixPanel.querySelector(".delete-log");
+      mixDeleteBtn.addEventListener("click", function () {
+        deleteMix(index);
+      });
 
       var titleEl = mixPanel.querySelector("h2");
       var dateEl = mixPanel.querySelector(".n-date");
@@ -2514,6 +2673,24 @@
     var savedSketch = safeParse(localStorage.getItem("mingos_sketch"), null);
     if (savedSketch && Array.isArray(savedSketch)) {
       strokes = savedSketch;
+    }
+
+    function saveSketchTools() {
+      var tools = {
+        brushColor: brushColor,
+        brushSize: brushSize,
+        eraserSize: eraserSize,
+        erasing: erasing
+      };
+      localStorage.setItem("mingos_sketchtools", JSON.stringify(tools));
+    }
+
+    var savedTools = safeParse(localStorage.getItem("mingos_sketchtools"), null);
+    if (savedTools) {
+      brushColor = savedTools.brushColor;
+      brushSize = savedTools.brushSize;
+      eraserSize = savedTools.eraserSize;
+      erasing = savedTools.erasing;
     }
 
     function getCanvasPos(e) {
@@ -2608,6 +2785,7 @@
       } else {
         eraserTool.classList.remove("active");
       }
+      saveSketchTools();
     });
 
     function selectSwatch(element) {
@@ -2618,6 +2796,7 @@
       brushColor = element.getAttribute("data-color");
       erasing = false;
       eraserTool.classList.remove("active");
+      saveSketchTools();
     }
 
     for (var c = 0; c < swatches.length; c++) {
@@ -2625,8 +2804,6 @@
         selectSwatch(this);
       });
     }
-
-    swatches[0].classList.add("active");
 
     function saveSketch() {
       localStorage.setItem("mingos_sketch", JSON.stringify(strokes));
@@ -2637,11 +2814,31 @@
 
     brushSlider.addEventListener("input", function () {
       brushSize = Number(brushSlider.value);
+      saveSketchTools();
     });
 
     eraserSlider.addEventListener("input", function () {
       eraserSize = Number(eraserSlider.value);
+      saveSketchTools();
     });
+
+    function restoreSketchUi() {
+      brushSlider.value = brushSize;
+      eraserSlider.value = eraserSize;
+      for (var i = 0; i < swatches.length; i++) {
+        swatches[i].classList.remove("active");
+        if (swatches[i].getAttribute("data-color") === brushColor) {
+          swatches[i].classList.add("active");
+        }
+      }
+      if (erasing) {
+        eraserTool.classList.add("active");
+      } else {
+        eraserTool.classList.remove("active");
+      }
+    }
+
+    restoreSketchUi();
 
     var saveTool = document.querySelector("#savetool");
 
@@ -2724,11 +2921,19 @@
 
     var gbEntries = [
       { name: "mingming ✦", message: "hope you enjoy :3", time: "Jun 6" },
-      { name: "sunny", message: "meow meow :3", time: "Jun 7" }
+      { name: "Sunny", message: "meow meow :3", time: "Jun 7" }
     ];
 
     function saveGuestbook() {
       localStorage.setItem("mingos_guestbook", JSON.stringify(gbEntries));
+    }
+
+    function wireGbEdit(entry, msgEl) {
+      msgEl.setAttribute("contenteditable", "true");
+      msgEl.addEventListener("input", function () {
+        entry.message = msgEl.innerText;
+        saveGuestbook();
+      });
     }
 
     function renderGuestbook() {
@@ -2752,6 +2957,10 @@
         timeP.className = "gb-entry-time";
         timeP.innerText = entry.time;
 
+        if (entry.own) {
+          wireGbEdit(entry, msgP);
+        }
+
         div.appendChild(nameP);
         div.appendChild(msgP);
         div.appendChild(timeP);
@@ -2772,12 +2981,13 @@
       var now = new Date();
       var dateString = months[now.getMonth()] + " " + now.getDate();
 
-      gbEntries.push({ name: name, message: message, time: dateString });
+      gbEntries.push({ name: name, message: message, time: dateString, own: true });
       saveGuestbook();
       renderGuestbook();
 
       nameInput.value = "";
       msgInput.value = "";
+      saveDraft();
     }
 
     var savedGuestbook = safeParse(localStorage.getItem("mingos_guestbook"), null);
@@ -2788,6 +2998,23 @@
     renderGuestbook();
 
     document.querySelector("#gbsign").addEventListener("click", signGuestbook);
+
+    var gbNameInput = document.querySelector("#gbname");
+    var gbMsgInput = document.querySelector("#gbmessage");
+
+    function saveDraft() {
+      var draft = { name: gbNameInput.value, message: gbMsgInput.value };
+      localStorage.setItem("mingos_gbdraft", JSON.stringify(draft));
+    }
+
+    var savedDraft = safeParse(localStorage.getItem("mingos_gbdraft"), null);
+    if (savedDraft) {
+      gbNameInput.value = savedDraft.name;
+      gbMsgInput.value = savedDraft.message;
+    }
+
+    gbNameInput.addEventListener("input", saveDraft);
+    gbMsgInput.addEventListener("input", saveDraft);
 
     var petState = { hunger: 30, happy: 60 };
 
@@ -2890,6 +3117,32 @@
       savePet();
       renderPet();
     }, 6000);
+
+    function applyLayout() {
+      for (var id in layout) {
+        var el = document.getElementById(id);
+        if (!el) {
+          continue;
+        }
+        var saved = layout[id];
+        if (saved.left) {
+          el.style.left = saved.left;
+        }
+        if (saved.top) {
+          el.style.top = saved.top;
+        }
+        if (saved.open === true) {
+          el.style.display = "block";
+        }
+        if (saved.open === false) {
+          el.style.display = "none";
+        }
+      }
+      updateDock();
+      refreshNewDock();
+    }
+
+    applyLayout();
   </script>
 
 </body>
