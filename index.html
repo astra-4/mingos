@@ -26,6 +26,7 @@
       color: #21345f;
       font-family: 'Nunito Sans', sans-serif;
       overflow: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
     .blob {
@@ -33,6 +34,7 @@
       border-radius: 50%;
       filter: blur(80px);
       z-index: 0;
+      transition: background 0.5s ease, opacity 0.5s ease;
     }
 
     .blob.one {
@@ -72,6 +74,12 @@
       align-items: center;
     }
 
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
     .dots {
       display: flex;
       gap: 6px;
@@ -109,6 +117,26 @@
       font-weight: 600;
       font-size: 14px;
       color: #3a5286;
+    }
+
+    .mode-toggle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 0 10px rgba(31, 107, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    .mode-toggle:hover {
+      transform: scale(1.12);
     }
 
     .desktop-apps {
@@ -164,6 +192,7 @@
       font-size: 13px;
       color: #2b3f6b;
       text-shadow: 0 1px 6px rgba(255, 255, 255, 0.8);
+      transition: color 0.5s ease, text-shadow 0.5s ease;
     }
 
     .flower {
@@ -290,6 +319,7 @@
       -webkit-backdrop-filter: blur(18px);
       box-shadow: 0 24px 60px -22px rgba(40, 70, 140, 0.4),
         0 0 0 1px rgba(160, 190, 255, 0.18);
+      transition: background 0.5s ease, border-color 0.5s ease;
     }
 
     .windowheader {
@@ -649,12 +679,13 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      height: 420px;
+      min-height: 420px;
     }
 
     .sketch-tools {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 9px;
       padding: 10px 14px;
       border-radius: 20px;
@@ -726,10 +757,509 @@
       display: block;
       touch-action: none;
     }
+
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1.5px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .track:hover {
+      border-color: #b9d4ff;
+    }
+
+    .track.playing {
+      border-color: #1f6bff;
+      background: #fff;
+    }
+
+    .track-play {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #1f6bff;
+      color: #fff;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .track-name {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1c2f59;
+    }
+
+    .mix-player {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(196, 186, 255, 0.16);
+    }
+
+    .mix-now {
+      margin: 0 0 10px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #5a6f9e;
+    }
+
+    .mix-player audio {
+      width: 100%;
+    }
+
+    .size-slider {
+      width: 76px;
+      accent-color: #1f6bff;
+      cursor: pointer;
+    }
+
+    .bootscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #dcebff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Quicksand', sans-serif;
+      transition: opacity 0.6s ease;
+    }
+
+    .bootscreen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .boot-logo {
+      font-size: 46px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #1f6bff;
+      margin-bottom: 4px;
+    }
+
+    .boot-sub {
+      margin: 0 0 26px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #8ea0c8;
+    }
+
+    .boot-bar {
+      width: 240px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(31, 107, 255, 0.18);
+      overflow: hidden;
+    }
+
+    .boot-fill {
+      width: 0;
+      height: 100%;
+      border-radius: 999px;
+      background: #1f6bff;
+      box-shadow: 0 0 12px rgba(31, 107, 255, 0.6);
+      transition: width 0.2s ease;
+    }
+
+    .boot-tip {
+      margin-top: 16px;
+      font-family: monospace;
+      font-size: 11.5px;
+      color: #8ea0c8;
+    }
+
+    .dock {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 16px 40px -16px rgba(40, 70, 140, 0.4);
+      transition: background 0.5s ease, border-color 0.5s ease;
+    }
+
+    .dock-item {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #1f6bff, #b9d4ff);
+      box-shadow: 0 8px 18px -6px rgba(31, 107, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.18s ease;
+    }
+
+    .dock-item:hover {
+      transform: translateY(-8px);
+    }
+
+    .dock-dot {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #1f6bff;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .dock-item.open .dock-dot {
+      opacity: 1;
+    }
+
+    .dock-tip {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #2b3f6b;
+      color: #fff;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .dock-item:hover .dock-tip {
+      opacity: 1;
+    }
+
+    .shooting-star {
+      position: fixed;
+      width: 130px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(31, 107, 255, 0), #1f6bff);
+      z-index: 1;
+      pointer-events: none;
+      animation: shoot 1.2s linear forwards;
+    }
+
+    @keyframes shoot {
+      0% {
+        transform: rotate(45deg) translateX(0);
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(45deg) translateX(420px);
+        opacity: 0;
+      }
+    }
+
+    .guestbook-body {
+      text-align: left;
+    }
+
+    .gb-intro {
+      margin: 0 0 16px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #56678f;
+    }
+
+    .gb-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .gb-input,
+    .gb-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1.5px solid #b9d4ff;
+      background: rgba(255, 255, 255, 0.75);
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 14px;
+      color: #21345f;
+      resize: none;
+    }
+
+    .gb-input:focus,
+    .gb-textarea:focus {
+      outline: none;
+      border-color: #1f6bff;
+    }
+
+    .gb-textarea {
+      min-height: 70px;
+    }
+
+    .gb-sign {
+      align-self: flex-start;
+      padding: 11px 24px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 6px 16px -6px rgba(31, 107, 255, 0.6);
+      transition: transform 0.15s ease;
+    }
+
+    .gb-sign:hover {
+      transform: translateY(-1px);
+    }
+
+    .gb-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .gb-entry {
+      padding: 13px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      border-left: 3px solid #c4baff;
+    }
+
+    .gb-entry-name {
+      margin: 0 0 4px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1f6bff;
+    }
+
+    .gb-entry-msg {
+      margin: 0 0 6px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #4a5d88;
+    }
+
+    .gb-entry-time {
+      margin: 0;
+      font-family: monospace;
+      font-size: 11px;
+      color: #8ea0c8;
+    }
+
+    .pet-body {
+      text-align: center;
+    }
+
+    .pet-name {
+      margin: 0 0 4px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #1f6bff;
+    }
+
+    .creature {
+      margin: 10px auto 12px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 54px;
+      color: #21345f;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+    }
+
+    .creature.bounce {
+      animation: petbounce 0.5s ease;
+    }
+
+    @keyframes petbounce {
+      0% {
+        transform: scale(1);
+      }
+      40% {
+        transform: scale(1.18);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pet-mood {
+      margin: 0 0 22px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #5a6f9e;
+    }
+
+    .pet-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0 auto 24px;
+      max-width: 320px;
+      text-align: left;
+    }
+
+    .pet-state-label {
+      margin: 0 0 5px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #8ea0c8;
+    }
+
+    .pet-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(31, 107, 255, 0.15);
+      overflow: hidden;
+    }
+
+    .pet-fill {
+      height: 100%;
+      width: 50%;
+      border-radius: 999px;
+      background: #ff8095;
+      transition: width 0.3s ease;
+    }
+
+    .pet-fill.happy {
+      background: #1f6bff;
+    }
+
+    .pet-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .pet-btn {
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      background: #1f6bff;
+      box-shadow: 0 6px 16px -6px rgba(31, 107, 255, 0.6);
+      transition: transform 0.15s ease;
+    }
+
+    .pet-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    body.night {
+      background: #0e1430;
+      color: #cdd9ff;
+    }
+
+    body.night .blob.one {
+      background: #1a2456;
+      opacity: 0.85;
+    }
+
+    body.night .blob.two {
+      background: #2a2150;
+      opacity: 0.75;
+    }
+
+    body.night .os-name {
+      color: #cdd9ff;
+    }
+
+    body.night .clock {
+      color: #9fb0e0;
+    }
+
+    body.night .icon-label {
+      color: #dbe3ff;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    body.night .mode-toggle {
+      background: #cdd9ff;
+      color: #0e1430;
+      box-shadow: 0 0 12px rgba(205, 217, 255, 0.5);
+    }
+
+    body.night .card {
+      background: rgba(244, 248, 255, 0.92);
+      border-color: rgba(120, 150, 255, 0.25);
+    }
+
+    body.night .dock {
+      background: rgba(30, 40, 80, 0.55);
+      border-color: rgba(120, 150, 255, 0.25);
+    }
+
+    body.night .dock-dot {
+      background: #cdd9ff;
+    }
+
+    body.night .shooting-star {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ffffff);
+    }
+
+    body.night .bootscreen {
+      background: #0e1430;
+    }
   </style>
 </head>
 
 <body>
+
+  <div class="bootscreen" id="bootscreen">
+    <p class="boot-logo">MingOS</p>
+    <p class="boot-sub">ad astra ✦</p>
+    <div class="boot-bar">
+      <div class="boot-fill" id="bootfill"></div>
+    </div>
+    <p class="boot-tip">booting up the cosmos...</p>
+  </div>
 
   <div class="blob one"></div>
   <div class="blob two"></div>
@@ -743,7 +1273,10 @@
       </div>
       <span class="os-name" id="welcomeopen">MingOS</span>
     </div>
-    <div class="clock" id="clock"></div>
+    <div class="topbar-right">
+      <button class="mode-toggle" id="modetoggle">☾</button>
+      <div class="clock" id="clock"></div>
+    </div>
   </div>
 
   <div class="app-icon" id="starlogicon" style="top: 64px; left: 18px;">
@@ -764,6 +1297,16 @@
   <div class="app-icon" id="sketchicon" style="top: 64px; left: 324px;">
     <div class="icon-art">✐</div>
     <p class="icon-label">Sketch</p>
+  </div>
+
+  <div class="app-icon" id="guestbookicon" style="top: 64px; left: 426px;">
+    <div class="icon-art">✉</div>
+    <p class="icon-label">Guestbook</p>
+  </div>
+
+  <div class="app-icon" id="peticon" style="top: 64px; left: 528px;">
+    <div class="icon-art">❀</div>
+    <p class="icon-label">Sunny</p>
   </div>
 
   <div class="flower tl">
@@ -903,7 +1446,7 @@
 
     <div class="avatar">
       <div class="inner">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN8bSnvLDR43IlnuMGZ5ldYeFPFmzWb0Qwgg&s" class="pfp">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeULrGCy4AENOlOSyA5e7m3L0yA7xR2sFASIfUv2AIRg&s=10" class="pfp">
       </div>
     </div>
 
@@ -941,7 +1484,7 @@
     <div class="app-body">
       <div class="sidebar" id="starlogsidebar">
         <button class="add-log" id="starlogadd">+ new log</button>
-        <p class="sidebar-tip">tip: hit + to add your own ✦ your entries are editable!</p>
+        <p class="sidebar-tip">hit "+ new log" to add your own entries - they're editable!</p>
       </div>
       <div class="note-panel" id="starlogcontent"></div>
     </div>
@@ -1010,14 +1553,116 @@
         <button class="swatch" style="background: #7fd8b0;" data-color="#7fd8b0"></button>
         <button class="swatch" style="background: #ffd166;" data-color="#ffd166"></button>
         <button class="swatch" style="background: #21345f;" data-color="#21345f"></button>
+        <span class="tool-label">brush</span>
+        <input type="range" class="size-slider" id="brushslider" min="1" max="30" value="4">
+        <span class="tool-label">eraser</span>
+        <input type="range" class="size-slider" id="eraserslider" min="4" max="60" value="20">
         <div class="tool-spacer"></div>
         <button class="tool-btn" id="erasertool">eraser</button>
+        <button class="tool-btn" id="savetool">save</button>
         <button class="tool-btn" id="undotool">undo</button>
         <button class="tool-btn" id="cleartool">clear</button>
       </div>
       <canvas class="sketch-canvas" id="sketchcanvas" width="632" height="330"></canvas>
     </div>
 
+  </div>
+
+   <div class="card" id="guestbook" style="display: none; max-width: 640px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="guestbookheader">
+      <div class="wdots">
+        <span class="wdot close" id="guestbookclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">guestbook ✉</span>
+    </div>
+
+    <div class="guestbook-body">
+      <p class="gb-intro">sign my guestbook!! leave a lil note before you drift off into the stars ✦</p>
+      <div class="gb-form">
+        <input type="text" class="gb-input" id="gbname" placeholder="your name :3" maxlength="24">
+        <textarea class="gb-textarea" id="gbmessage" placeholder="say something nice..." maxlength="200"></textarea>
+        <button class="gb-sign" id="gbsign">sign ✿</button>
+      </div>
+      <div class="gb-list" id="gblist"></div>
+    </div>
+
+  </div>
+
+  <div class="card" id="pet" style="display: none; max-width: 480px; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+
+    <div class="windowheader" id="petheader">
+      <div class="wdots">
+        <span class="wdot close" id="petclose"></span>
+        <span class="wdot two"></span>
+        <span class="wdot three"></span>
+      </div>
+      <span class="handle-label">plushie ❀</span>
+    </div>
+
+    <div class="pet-body">
+      <p class="pet-name">Mochi</p>
+      <div class="creature" id="creature">(◕‿◕)</div>
+      <p class="pet-mood" id="petmood">click me to pet ^-^</p>
+
+      <div class="pet-stats">
+        <div class="pet-stat">
+          <p class="pet-stat-label">hunger</p>
+          <div class="pet-bar"><div class="pet-fill" id="hungerfill"></div></div>
+        </div>
+        <div class="pet-stat">
+          <p class="pet-stat-label">happy</p>
+          <div class="pet-bar"><div class="pet-fill happy" id="happyfill"></div></div>
+        </div>
+      </div>
+
+      <div class="pet-buttons">
+        <button class="pet-btn" id="feedbtn">feed ♥</button>
+        <button class="pet-btn" id="petbtn">pet ✿</button>
+        <button class="pet-btn" id="playbtn">play ✦</button>
+      </div>
+    </div>
+
+  </div>
+ 
+  <div class="dock" id="dock">
+    <div class="dock-item" id="dockwelcome">
+      ✿
+      <span class="dock-tip">welcome</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="dockstarlog">
+      ✦
+      <span class="dock-tip">star log</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="dockdoodle">
+      ✎
+      <span class="dock-tip">doodles</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="dockmix">
+      ♪
+      <span class="dock-tip">mixtape</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="docksketch">
+      ✐
+      <span class="dock-tip">sketch</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="dockguestbook">
+      ✉
+      <span class="dock-tip">guestbook</span>
+      <span class="dock-dot"></span>
+    </div>
+    <div class="dock-item" id="dockpet">
+      ❀
+      <span class="dock-tip">Sunny</span>
+      <span class="dock-dot"></span>
+    </div>
   </div>
 
   <script>
@@ -1058,6 +1703,27 @@
 
     updateClock();
     setInterval(updateClock, 1000);
+
+    var bootScreen = document.querySelector("#bootscreen");
+    var bootFill = document.querySelector("#bootfill");
+    var bootProgress = 0;
+
+    function tickBoot() {
+      bootProgress = bootProgress + Math.random() * 16 + 7;
+      if (bootProgress > 100) {
+        bootProgress = 100;
+      }
+      bootFill.style.width = bootProgress + "%";
+      if (bootProgress < 100) {
+        setTimeout(tickBoot, 220);
+      } else {
+        setTimeout(function () {
+          bootScreen.classList.add("hidden");
+        }, 450);
+      }
+    }
+
+    tickBoot();
 
     dragElement(document.getElementById("welcome"));
     dragElement(document.getElementById("starlog"));
@@ -1137,6 +1803,7 @@
 
     function closeWindow(element) {
       element.style.display = "none";
+      updateDock();
     }
 
     function openWindow(element) {
@@ -1144,6 +1811,7 @@
       biggestIndex++;
       element.style.zIndex = biggestIndex;
       topBar.style.zIndex = biggestIndex + 1;
+      updateDock();
     }
 
     function handleWindowTap(element) {
@@ -1237,6 +1905,91 @@
       handleIconTap(sketchIcon, sketchScreen);
     });
 
+    var dockWelcome = document.querySelector("#dockwelcome");
+    var dockStarlog = document.querySelector("#dockstarlog");
+    var dockDoodle = document.querySelector("#dockdoodle");
+    var dockMix = document.querySelector("#dockmix");
+    var dockSketch = document.querySelector("#docksketch");
+
+    dockWelcome.addEventListener("click", function () {
+      openWindow(welcomeScreen);
+    });
+
+    dockStarlog.addEventListener("click", function () {
+      openWindow(starlogScreen);
+    });
+
+    dockDoodle.addEventListener("click", function () {
+      openWindow(doodleScreen);
+    });
+
+    dockMix.addEventListener("click", function () {
+      openWindow(mixScreen);
+    });
+
+    dockSketch.addEventListener("click", function () {
+      openWindow(sketchScreen);
+    });
+
+    function toggleDockOpen(dockItem, screen) {
+      if (screen.style.display === "none") {
+        dockItem.classList.remove("open");
+      } else {
+        dockItem.classList.add("open");
+      }
+    }
+
+    function updateDock() {
+      toggleDockOpen(dockWelcome, welcomeScreen);
+      toggleDockOpen(dockStarlog, starlogScreen);
+      toggleDockOpen(dockDoodle, doodleScreen);
+      toggleDockOpen(dockMix, mixScreen);
+      toggleDockOpen(dockSketch, sketchScreen);
+    }
+
+    updateDock();
+
+    var modeToggle = document.querySelector("#modetoggle");
+    var nightMode = false;
+
+    if (localStorage.getItem("mingos_night") === "1") {
+      nightMode = true;
+      document.body.classList.add("night");
+      modeToggle.innerHTML = "☀";
+    }
+
+    modeToggle.addEventListener("click", function () {
+      nightMode = !nightMode;
+      if (nightMode) {
+        document.body.classList.add("night");
+        modeToggle.innerHTML = "☀";
+        localStorage.setItem("mingos_night", "1");
+      } else {
+        document.body.classList.remove("night");
+        modeToggle.innerHTML = "☾";
+        localStorage.setItem("mingos_night", "0");
+      }
+    });
+
+    function makeShootingStar() {
+      var star = document.createElement("div");
+      star.className = "shooting-star";
+      var startX = Math.random() * (window.innerWidth - 200);
+      var startY = Math.random() * (window.innerHeight * 0.45);
+      star.style.left = startX + "px";
+      star.style.top = startY + "px";
+      document.body.appendChild(star);
+      setTimeout(function () {
+        star.remove();
+      }, 1300);
+    }
+
+    setInterval(function () {
+      if (Math.random() < 0.55) {
+        makeShootingStar();
+      }
+    }, 3500);
+
     function setActiveSidebar(sidebar, index) {
       var items = sidebar.querySelectorAll(".sidebar-item");
       for (var i = 0; i < items.length; i++) {
@@ -1266,19 +2019,19 @@
         `
       },
       {
-        title: "moon was loud",
-        date: "07/04/2026",
-        body: `
-          <p>full moon tonight and it would NOT stop staring at me. rude -_-</p>
-          <p>note to self: buy bigger curtains. or befriend the moon. currently undecided.</br><small>(or maybe i'll kidnap it! >:3)</small></p>
-        `
-      },
-      {
         title: "to-do list",
         date: "06/07/2026",
         body: `
           <p>things to do before the next comet swings by:</p>
           <p>1. learn the names of 3 constellations<br>2. pet cats :3<br>3. cuddle up and sleep with my plushies</p>
+        `
+      },
+      {
+        title: "moon was loud",
+        date: "07/04/2026",
+        body: `
+          <p>full moon tonight and it would NOT stop staring at me. rude -_-</p>
+          <p>note to self: buy bigger curtains. or befriend the moon. currently undecided.</br><small>(or maybe i'll kidnap it! >:3)</small></p>
         `
       }
     ];
@@ -1309,13 +2062,16 @@
       titleEl.addEventListener("input", function () {
         note.title = titleEl.innerText;
         updateSidebarItem(starlogSidebar, index, note);
+        saveStar();
       });
       dateEl.addEventListener("input", function () {
         note.date = dateEl.innerText;
         updateSidebarItem(starlogSidebar, index, note);
+        saveStar();
       });
       bodyEl.addEventListener("input", function () {
         note.body = bodyEl.innerHTML;
+        saveStar();
       });
     }
 
@@ -1332,9 +2088,21 @@
       starlogSidebar.appendChild(newDiv);
     }
 
-    for (var i = 0; i < starContent.length; i++) {
-      starContent[i].locked = true;
-      addToSidebar(i);
+    function saveStar() {
+      localStorage.setItem("mingos_star", JSON.stringify(starContent));
+    }
+
+    var savedStar = localStorage.getItem("mingos_star");
+    if (savedStar) {
+      starContent = JSON.parse(savedStar);
+    } else {
+      for (var sk = 0; sk < starContent.length; sk++) {
+        starContent[sk].locked = true;
+      }
+    }
+
+    for (var sb = 0; sb < starContent.length; sb++) {
+      addToSidebar(sb);
     }
 
     setStarContent(0);
@@ -1351,6 +2119,7 @@
       var index = starContent.length - 1;
       addToSidebar(index);
       setStarContent(index);
+      saveStar();
     }
 
     starlogAdd.addEventListener("click", addNewStar);
@@ -1368,7 +2137,7 @@
             <path d="M148 44 q9 -9 18 0"/>
           </svg>
         `,
-        caption: "first page of the sketchbook!! mostly cats and little stars so far :3"
+        caption: "first page of the sketchbook!! here's a little star cluster :3"
       },
       {
         title: "cat #4",
@@ -1386,7 +2155,7 @@
             <path d="M122 80 H142 M122 88 H142"/>
           </svg>
         `,
-        caption: "drew this cat. he has too many whiskers but we love him anyway ^-^"
+        caption: "drew this cat. he a little wonky but we love him anyway ^-^"
       },
       {
         title: "star map",
@@ -1404,7 +2173,7 @@
             <circle cx="120" cy="120" r="3" fill="#1f6bff"/>
           </svg>
         `,
-        caption: "a map of stars i definitely did not make up. that one's called the big spoon."
+        caption: "a map of stars i definitely did not make up. that one's called the long neck."
       }
     ];
 
@@ -1451,13 +2220,16 @@
       titleEl.addEventListener("input", function () {
         doodle.title = titleEl.innerText;
         updateSidebarItem(doodleSidebar, index, doodle);
+        saveDoodle();
       });
       dateEl.addEventListener("input", function () {
         doodle.date = dateEl.innerText;
         updateSidebarItem(doodleSidebar, index, doodle);
+        saveDoodle();
       });
       captionEl.addEventListener("input", function () {
         doodle.caption = captionEl.innerText;
+        saveDoodle();
       });
 
       function loadDoodleImage(file) {
@@ -1468,6 +2240,7 @@
         reader.onload = function () {
           doodle.img = reader.result;
           setDoodleContent(index);
+          saveDoodle();
         };
         reader.readAsDataURL(file);
       }
@@ -1505,9 +2278,21 @@
       doodleSidebar.appendChild(newDiv);
     }
 
-    for (var j = 0; j < doodleContent.length; j++) {
-      doodleContent[j].locked = true;
-      addToDoodleSidebar(j);
+    function saveDoodle() {
+      localStorage.setItem("mingos_doodle", JSON.stringify(doodleContent));
+    }
+
+    var savedDoodle = localStorage.getItem("mingos_doodle");
+    if (savedDoodle) {
+      doodleContent = JSON.parse(savedDoodle);
+    } else {
+      for (var dk = 0; dk < doodleContent.length; dk++) {
+        doodleContent[dk].locked = true;
+      }
+    }
+
+    for (var db = 0; db < doodleContent.length; db++) {
+      addToDoodleSidebar(db);
     }
 
     setDoodleContent(0);
@@ -1526,6 +2311,7 @@
       var index = doodleContent.length - 1;
       addToDoodleSidebar(index);
       setDoodleContent(index);
+      saveDoodle();
     }
 
     doodleAdd.addEventListener("click", addNewDoodle);
@@ -1533,48 +2319,98 @@
     var mixContent = [
       {
         title: "night drive",
-        date: "6 songs",
-        body: `
-          <p>songs for when it's late and the streetlights blur into little stars ✦</p>
-          <blockquote>1. slow synths<br>2. the one with those fire beats<br>3. moments with you<br>4. rain on the window.mp3</blockquote>
-          <p>press play in your head. trust.</p>
-        `
+        date: "3 songs",
+        body: `<p>songs for when it's late and the streetlights blur into little stars ✦ tap a track to play :3</p>`,
+        tracks: [
+          { name: "midnight cruise", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+          { name: "neon rain", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+          { name: "city lights", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+        ]
       },
       {
         title: "study brain",
-        date: "4 songs",
-        body: `
-          <p>lo-fi loops to trick my brain into focusing for at least six or seven whole minutes :3</p>
-          <blockquote>tong hua · soft piano · illit! · he ping fen shou</blockquote>
-        `
+        date: "2 songs",
+        body: `<p>lo-fi loops to trick my brain into focusing for at least six whole minutes :3</p>`,
+        tracks: [
+          { name: "soft piano", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+          { name: "focus loop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
+        ]
       },
       {
         title: "hype !!",
-        date: "3 songs",
-        body: `
-          <p>for cleaning my room and pretending it's a movie montage</p>
-          <blockquote>la vaguelette · absolutio absoluta absolutissime · feng qi le</blockquote>
-        `
+        date: "2 songs",
+        body: `<p>for cleaning my room and pretending it's a movie montage</p>`,
+        tracks: [
+          { name: "montage mode", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+          { name: "main character", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" }
+        ]
       }
     ];
+
+    function saveMix() {
+      localStorage.setItem("mingos_mix", JSON.stringify(mixContent));
+    }
+
+    function buildTracksHtml(tracks) {
+      if (!tracks || tracks.length === 0) {
+        return "";
+      }
+      var html = "<div class='track-list'>";
+      for (var t = 0; t < tracks.length; t++) {
+        html +=
+          "<div class='track' data-src='" + tracks[t].url + "' data-name='" + tracks[t].name + "'>" +
+            "<span class='track-play'>▶</span>" +
+            "<span class='track-name'>" + tracks[t].name + "</span>" +
+          "</div>";
+      }
+      html += "</div>";
+      return html;
+    }
+
+    var mixPlayerHtml =
+      "<div class='mix-player'>" +
+        "<p class='mix-now'>nothing playing yet ♪</p>" +
+        "<audio id='mixaudio' controls></audio>" +
+      "</div>";
+
+    function wireMixPlayer(panel) {
+      var audio = panel.querySelector("#mixaudio");
+      var nowEl = panel.querySelector(".mix-now");
+      var tracks = panel.querySelectorAll(".track");
+
+      for (var t = 0; t < tracks.length; t++) {
+        tracks[t].addEventListener("click", function () {
+          audio.src = this.getAttribute("data-src");
+          audio.play();
+          nowEl.innerText = "now playing: " + this.getAttribute("data-name");
+          for (var m = 0; m < tracks.length; m++) {
+            tracks[m].classList.remove("playing");
+          }
+          this.classList.add("playing");
+        });
+      }
+    }
 
     function setMixContent(index) {
       var mix = mixContent[index];
       var mixPanel = document.querySelector("#mixcontent");
+      var tracksHtml = buildTracksHtml(mix.tracks);
 
       if (mix.locked) {
         mixPanel.innerHTML =
           "<h2>" + mix.title + "</h2>" +
           "<p class='n-date'>" + mix.date + "</p>" +
-          mix.body;
+          mix.body + tracksHtml + mixPlayerHtml;
         setActiveSidebar(mixSidebar, index);
+        wireMixPlayer(mixPanel);
         return;
       }
 
       mixPanel.innerHTML =
         "<h2 contenteditable='true'>" + mix.title + "</h2>" +
         "<p class='n-date' contenteditable='true'>" + mix.date + "</p>" +
-        "<div class='note-edit' contenteditable='true'>" + mix.body + "</div>";
+        "<div class='note-edit' contenteditable='true'>" + mix.body + "</div>" +
+        tracksHtml + mixPlayerHtml;
       setActiveSidebar(mixSidebar, index);
 
       var titleEl = mixPanel.querySelector("h2");
@@ -1584,14 +2420,19 @@
       titleEl.addEventListener("input", function () {
         mix.title = titleEl.innerText;
         updateSidebarItem(mixSidebar, index, mix);
+        saveMix();
       });
       dateEl.addEventListener("input", function () {
         mix.date = dateEl.innerText;
         updateSidebarItem(mixSidebar, index, mix);
+        saveMix();
       });
       bodyEl.addEventListener("input", function () {
         mix.body = bodyEl.innerHTML;
+        saveMix();
       });
+
+      wireMixPlayer(mixPanel);
     }
 
     function addToMixSidebar(index) {
@@ -1607,9 +2448,17 @@
       mixSidebar.appendChild(newDiv);
     }
 
-    for (var k = 0; k < mixContent.length; k++) {
-      mixContent[k].locked = true;
-      addToMixSidebar(k);
+    var savedMix = localStorage.getItem("mingos_mix");
+    if (savedMix) {
+      mixContent = JSON.parse(savedMix);
+    } else {
+      for (var mk = 0; mk < mixContent.length; mk++) {
+        mixContent[mk].locked = true;
+      }
+    }
+
+    for (var mb = 0; mb < mixContent.length; mb++) {
+      addToMixSidebar(mb);
     }
 
     setMixContent(0);
@@ -1620,12 +2469,14 @@
       var newMix = {
         title: "new mix",
         date: "0 songs",
-        body: "<p>add your own songs here ♪</p>"
+        body: "<p>add your own songs here ♪</p>",
+        tracks: []
       };
       mixContent.push(newMix);
       var index = mixContent.length - 1;
       addToMixSidebar(index);
       setMixContent(index);
+      saveMix();
     }
 
     mixAdd.addEventListener("click", addNewMix);
@@ -1646,6 +2497,11 @@
     var strokes = [];
     var currentStroke = null;
     var drawing = false;
+
+    var savedSketch = localStorage.getItem("mingos_sketch");
+    if (savedSketch) {
+      strokes = JSON.parse(savedSketch);
+    }
 
     function getCanvasPos(e) {
       var rect = sketchCanvas.getBoundingClientRect();
@@ -1707,6 +2563,9 @@
     }
 
     function stopSketch() {
+      if (drawing) {
+        saveSketch();
+      }
       drawing = false;
       currentStroke = null;
     }
@@ -1718,6 +2577,7 @@
     function undoStroke() {
       strokes.pop();
       redrawSketch();
+      saveSketch();
     }
 
     undoTool.addEventListener("click", undoStroke);
@@ -1725,6 +2585,7 @@
     clearTool.addEventListener("click", function () {
       strokes = [];
       redrawSketch();
+      saveSketch();
     });
 
     eraserTool.addEventListener("click", function () {
@@ -1754,12 +2615,46 @@
 
     swatches[0].classList.add("active");
 
+    function saveSketch() {
+      localStorage.setItem("mingos_sketch", JSON.stringify(strokes));
+    }
+
+    var brushSlider = document.querySelector("#brushslider");
+    var eraserSlider = document.querySelector("#eraserslider");
+
+    brushSlider.addEventListener("input", function () {
+      brushSize = Number(brushSlider.value);
+    });
+
+    eraserSlider.addEventListener("input", function () {
+      eraserSize = Number(eraserSlider.value);
+    });
+
+    var saveTool = document.querySelector("#savetool");
+
+    saveTool.addEventListener("click", function () {
+      var exportCanvas = document.createElement("canvas");
+      exportCanvas.width = sketchCanvas.width;
+      exportCanvas.height = sketchCanvas.height;
+      var exportCtx = exportCanvas.getContext("2d");
+      exportCtx.fillStyle = "#f7faff";
+      exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+      exportCtx.drawImage(sketchCanvas, 0, 0);
+      var link = document.createElement("a");
+      link.download = "mingos-sketch.png";
+      link.href = exportCanvas.toDataURL("image/png");
+      link.click();
+    });
+
+    redrawSketch();
+
     document.addEventListener("keydown", function (e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === "z" || e.key === "Z")) {
         e.preventDefault();
         undoStroke();
       }
     });
+  
   </script>
 
 </body>
