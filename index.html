@@ -2654,7 +2654,229 @@
         undoStroke();
       }
     });
-  
+
+    dragElement(document.getElementById("guestbook"));
+    dragElement(document.getElementById("pet"));
+    dragElement(document.getElementById("guestbookicon"));
+    dragElement(document.getElementById("peticon"));
+
+    var guestbookScreen = document.querySelector("#guestbook");
+    var guestbookScreenClose = document.querySelector("#guestbookclose");
+    var guestbookIcon = document.querySelector("#guestbookicon");
+
+    var petScreen = document.querySelector("#pet");
+    var petScreeClose = document.querySelector("#petclose");
+    var petIcon = document.querySelector("#peticon");
+
+    addWindowTapHandling(guestbookScreen);
+    addWindowTapHandling(petScreen);
+
+    var dockGuestbook = document.querySelector("#dockguestbook");
+    var dockPet = document.querySelector("#dockpet");
+
+    function refreshNewDock() {
+      toggleDockOpen(dockGuestbook, guestbookScreen);
+      toggleDockOpen(dockPet, petScreen);
+    }
+
+    guestbookScreenClose.addEventListener("click", function () {
+      closeWindow(guestbookScreen);
+      refreshNewDock();
+    });
+
+    petScreenClose.addEventListener("click", function () {
+      closeWindow(petScreen);
+      refreshNewDock();
+    });
+
+    guestbookIcon.addEventListener("click", function () {
+      handleIconTap(guestbookIcon, guestbookScreen);
+      refreshNewDock();
+    });
+
+    petIcon.addEventListener("click", function () {
+      handleIconTap(petIcon, petScreen);
+      refreshNewDock();
+    });
+
+    dockGuestbook.addEventListener("click", function () {
+      openWindow(guestbookScreen);
+      refreshNewDock();
+    });
+
+    dockPet.addEventListener("click", function () {
+      openWindow(petScreen);
+      refreshNewDock();
+    });
+
+    var gbEntries = [
+      { name: "mingming ✦", message: "hope you enjoy :3", time: "Jun 6" },
+      { name: "sunny", message: "meow meow :3", time: "Jun 7" }
+    ];
+
+    function saveGuestbook() {
+      localStorage.setItem("mingos_guestbook", JSON.stringify(gbEntries));
+    }
+
+    function renderGuestbook() {
+      var list = document.querySelector("#gblist");
+      list.innerHTML = "";
+      for (var i = gbEntries.length - 1; i >= 0; i--) {
+        var entry = gbEntries[i];
+
+        var div = document.createElement("div");
+        div.className = "gb-entry";
+
+        var nameP = document.createElement("p");
+        nameP.className = "gb-entry-name";
+        nameP.innerText = entry.name;
+
+        var msgP = document.createElement("p");
+        msgP.className = "gb-entry-msg";
+        msgP.innerText = entry.message;
+
+        var timeP = document.createElement("p");
+        timeP.className = "gb-entry-time";
+        timeP.innerText = entry.time;
+
+        div.appendChild(nameP);
+        div.appendChild(msgP);
+        div.appendChild(timeP);
+        list.appendChild(div);
+      }
+    }
+
+    function signGuestbook() {
+      var nameInput = document.querySelector("#gbname");
+      var msgInput = document.querySelector("#gbmessage");
+      var name = nameInput.value.trim();
+      var message = msgInput.value.trim();
+
+      if (name === "" || message === "") {
+        return;
+      }
+
+      var now = new Date();
+      var dateString = months[now.getMonth()] + " " + now.getDate();
+
+      gbEntries.push({ name: name, message: message, time: dateString });
+      saveGuestbook();
+      renderGuestbook();
+
+      nameInput.value = "";
+      msgInput.value = "";
+    }
+
+    var savedGuestbook = localStorage.getItem("mingos_guestbook");
+    if (savedGuestbook) {
+      gbEntries = JSON.parse(savedGuestbook);
+    }
+
+    renderGuestbook();
+
+    document.querySelector("#gbsign").addEventListener("click", signGuestbook);
+
+    var petState = { hunger: 30, happy: 60 };
+
+    function savePet() {
+      localStorage.setItem("mingos_pet", JSON.stringify(petState));
+    }
+
+    function clampPet(value) {
+      if (value < 0) {
+        return 0;
+      }
+      if (value > 100) {
+        return 100;
+      }
+      return value;
+    }
+
+    function petFace() {
+      if (petState.hunger >= 70) {
+        return "(◞‸◟)";
+      }
+      if (petState.happy < 30) {
+        return "(╥﹏╥)";
+      }
+      if (petState.happy >= 70) {
+        return "(˶˃ ᵕ ˂˶)";
+      }
+      return "(◡‿◡)";
+    }
+
+    function petMoodText() {
+      if (petState.hunger >= 70) {
+        return "i'm so hungryyy... feed me pls :(";
+      }
+      if (petState.happy < 30) {
+        return "pet me pls... i'm lonely";
+      }
+      if (petState.happy >= 70) {
+        return "i love you!! best day ever :3";
+      }
+      return "just vibing ^-^";
+    }
+
+    function renderPet() {
+      document.querySelector("#creature").innerText = petFace();
+      document.querySelector("#petmood").innerText = petMoodText();
+      document.querySelector("#hungerfill").style.width = petState.hunger + "%";
+      document.querySelector("#happyfill").style.width = petState.happy + "%";
+    }
+
+    var creatureEl = document.querySelector("#creature");
+
+    function reactCreature(face) {
+      creatureEl.innerText = face;
+      creatureEl.classList.add("bounce");
+      setTimeout(function () {
+        creatureEl.classList.remove("bounce");
+        renderPet();
+      }, 600);
+    }
+
+    function feedPet() {
+      petState.hunger = clampPet(petState.hunger - 25);
+      petState.happy = clampPet(petState.happy + 5);
+      savePet();
+      renderPet();
+      reactCreature("₍  ˶•⤙•˶ ₎");
+    }
+
+    function petThePet() {
+      petState.happy = clampPet(petState.happy + 12);
+      savePet();
+      renderPet();
+      reactCreature("( ˶ˆ꒳ˆ˵ )");
+    }
+
+    function playWithPet() {
+      petState.happy = clampPet(petState.happy + 18);
+      petState.hunger = clampPet(petState.hunger + 12);
+      savePet();
+      renderPet();
+      reactCreature("٩(ˊᗜˋ*)و");
+    }
+
+    var savedPet = localStorage.getItem("mingos_pet");
+    if (savedPet) {
+      petState = JSON.parse(savedPet);
+    }
+
+    renderPet();
+
+    creatureEl.addEventListener("click", petThePet);
+    document.querySelector("#feedbtn").addEventListener("click", feedPet);
+    document.querySelector("#petbtn").addEventListener("click", petThePet);
+    document.querySelector("#playbtn").addEventListener("click", playWithPet);
+
+    setInterval(function () {
+      petState.hunger = clampPet(petState.hunger + 3);
+      petState.happy = clampPet(petState.happy - 2);
+      savePet();
+      renderPet();
+    }, 6000);
   </script>
 
 </body>
